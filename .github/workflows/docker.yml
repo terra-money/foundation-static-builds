@@ -56,8 +56,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           images: |
-            ghcr.io/${{ matrix.name }}
-            terraformlabs/${{ matrix.name }}
+            ghcr.io/${{ github.repository }}/${{ matrix.name }}
+            ${{ secrets.DOCKERHUB_USER }}/${{ matrix.name }}
           tags: |
             type=sha
             type=edge,branch=test
@@ -69,7 +69,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: ${{ github.event_name != 'pull_request' }}
-          file: Dockerfile
-          platforms: linux/amd64,linux/arm64 darwin/amd64,darwin/arm64
+          file: ${{ matrix.name }}.Dockerfile
+          platforms: linux/amd64,linux/arm64
           tags: ${{ env.DOCKER_METADATA_OUTPUT_TAGS }}
           labels: ${{ env.DOCKER_METADATA_OUTPUT_LABELS }}
