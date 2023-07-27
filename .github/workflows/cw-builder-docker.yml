@@ -1,0 +1,124 @@
+name: Docker Build
+
+on:
+  pull_request:
+    branches:
+      - main
+      - test
+  push:
+    branches:
+      - main
+      - test
+    tags:
+      - 'v*'
+
+jobs:
+  build-cosmwasm:
+
+    strategy:
+      matrix:
+        platform: [linux/amd64,linux/arm64]
+        name: [
+            "v1.3.0",
+            "v1.2.4",
+            "v1.2.3",
+            "v1.2.2",
+            "v1.2.1",
+            "v1.2.0",
+            "v1.1.2",
+            "v1.1.1",
+            "v1.1.0",
+            "v1.0.1",
+            "v1.0.0",
+            "v0.16.7",
+            "v0.16.6",
+            "v0.16.5",
+            "v0.16.3",
+            "v0.16.2",
+            "v0.16.1",
+            "v0.16.0",
+            "v0.15.1",
+            "v0.15.0",
+            "v0.14.0",
+            "v0.13.1",
+            "v0.13.0",
+            "v0.12.0",
+        ]
+        exclude: 
+            - name: "v0.16.5"
+              platform: linux/amd64
+            - name: "v0.16.3"
+              platform: linux/amd64
+            - name: "v0.16.2"
+              platform: linux/amd64
+            - name: "v0.16.1"
+              platform: linux/amd64
+            - name: "v0.16.0"
+              platform: linux/amd64
+            - name: "v0.15.1"
+              platform: linux/amd64
+            - name: "v0.15.0"
+              platform: linux/amd64
+            - name: "v0.14.0"
+              platform: linux/amd64
+            - name: "v0.13.1"
+              platform: linux/amd64
+            - name: "v0.13.0"
+              platform: linux/amd64
+            - name: "v0.12.0" 
+              platform: linux/amd64
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # https://docs.docker.com/build/ci/github-actions/multi-platform/
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Workaround: https://github.com/docker/build-push-action/issues/461
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v2
+
+      # https://github.com/docker/login-action
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Log in to the github container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          images: |
+            ghcr.io/${{ github.repository }}/${{ matrix.name }}
+            ${{ secrets.DOCKERHUB_USER }}/${{ matrix.name }}
+          tags: |
+            type=sha
+            type=edge,branch=test
+            type=semver,pattern={{tag}}
+            type=semver,pattern={{version}}
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build docker image
+        uses: docker/build-push-action@v4
+        with:
+          push: ${{ github.event_name != 'pull_request' }}
+          file: ${{ matrix.name }}.Dockerfile
+          platforms: ${{ matrix.platform }}
+          tags: ${{ env.DOCKER_METADATA_OUTPUT_TAGS }}
+          labels: ${{ env.DOCKER_METADATA_OUTPUT_LABELS }}
