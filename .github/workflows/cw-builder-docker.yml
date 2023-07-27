@@ -1,4 +1,4 @@
-name: Docker Build
+name: cw-builder
 
 on:
   pull_request:
@@ -18,31 +18,31 @@ jobs:
     strategy:
       matrix:
         platform: [linux/amd64,linux/arm64]
-        name: [
-            "v1.3.0",
-            "v1.2.4",
-            "v1.2.3",
-            "v1.2.2",
-            "v1.2.1",
-            "v1.2.0",
-            "v1.1.2",
-            "v1.1.1",
-            "v1.1.0",
-            "v1.0.1",
-            "v1.0.0",
-            "v0.16.7",
-            "v0.16.6",
-            "v0.16.5",
-            "v0.16.3",
-            "v0.16.2",
-            "v0.16.1",
-            "v0.16.0",
-            "v0.15.1",
-            "v0.15.0",
-            "v0.14.0",
-            "v0.13.1",
-            "v0.13.0",
-            "v0.12.0",
+        version: [
+            "1.3.0",
+            "1.2.4",
+            "1.2.3",
+            "1.2.2",
+            "1.2.1",
+            "1.2.0",
+            "1.1.2",
+            "1.1.1",
+            "1.1.0",
+            "1.0.1",
+            "1.0.0",
+            "0.16.7",
+            "0.16.6",
+            "0.16.5",
+            "0.16.3",
+            "0.16.2",
+            "0.16.1",
+            "0.16.0",
+            "0.15.1",
+            "0.15.0",
+            "0.14.0",
+            "0.13.1",
+            "0.13.0",
+            "0.12.0",
         ]
         exclude: 
             - name: "v0.16.5"
@@ -105,14 +105,11 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           images: |
-            ghcr.io/${{ github.repository }}/${{ matrix.name }}
-            ${{ secrets.DOCKERHUB_USER }}/${{ matrix.name }}
+            ghcr.io/${{ github.repository }}/cw-builder
+            ${{ secrets.DOCKERHUB_USER }}/cw-bulder
           tags: |
             type=sha
-            type=edge,branch=test
-            type=semver,pattern={{tag}}
-            type=semver,pattern={{version}}
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=${{ matrix.version }}
 
       - name: Build docker image
         uses: docker/build-push-action@v4
@@ -122,3 +119,6 @@ jobs:
           platforms: ${{ matrix.platform }}
           tags: ${{ env.DOCKER_METADATA_OUTPUT_TAGS }}
           labels: ${{ env.DOCKER_METADATA_OUTPUT_LABELS }}
+          build-args: |
+            WASMVM_VERSION="v${{ matrix.version }}"
+            BUILDPLATFORM="${{ matrix.platform }}"
