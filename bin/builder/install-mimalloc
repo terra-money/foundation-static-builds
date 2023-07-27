@@ -1,0 +1,20 @@
+#!/bin/sh
+set -eu
+
+MIMALLOC_VERSION="$1"
+
+if [ -n "${MIMALLOC_VERSION}" ]; then 
+    # install mimalloc for musl
+    mkdir -p "${GOPATH}/src/mimalloc"
+    cd "${GOPATH}/src/mimalloc"
+    git clone --depth 1 --branch "${MIMALLOC_VERSION}" \
+        https://github.com/microsoft/mimalloc ./
+    mkdir -p build 
+    cd build 
+    cmake .. 
+    make -j$(nproc) 
+    make install
+else
+    echo "MIMALLOC_VERSION not set" >&2
+    exit 1
+fi
