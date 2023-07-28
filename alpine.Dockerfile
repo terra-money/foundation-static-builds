@@ -25,9 +25,7 @@ ARG APP_NAME="terra"
 ARG BIN_NAME="${APP_NAME}d"
 ARG BUILD_COMMAND="make install"
 ARG BUILD_TAGS="muslc"
-ARG CHAIN_NAME="${APP_NAME}-1"
 ARG COSMOS_BUILD_OPTIONS="nostrip"
-ARG DENOM
 ARG GIT_TAG="v2.4.1"
 ARG GIT_REPO="terra-money/core"
 #ARG LDFLAGS="-extldflags '-L/go/src/mimalloc/build -lmimalloc -Wl,-z,muldefs -static'"
@@ -82,10 +80,8 @@ FROM --platform=${BUILDPLATFORM} alpine:${ALPINE_VERSION} as prod
 ARG APP_NAME="terra"
 ARG BIN_NAME="${APP_NAME}d"
 ARG USER_NAME="${APP_NAME}"
-ARG CHAIN_NAME="${APP_NAME}-1"
 
 # copy binary
-COPY ./bin/prod/ /usr/local/bin/
 COPY --from=builder /go/bin/${BIN_NAME} /usr/local/bin/${BIN_NAME}
 
 # install jq and create user
