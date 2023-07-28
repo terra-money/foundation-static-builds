@@ -3,7 +3,7 @@ ARG OS_VERESION="3.16"
 ARG BUILDPLATFORM=linux/amd64
 
 ################################################################################
-FROM --platform=${BUILDPLATFORM} golang:${GO_VERSION}-alpine${OS_VERESION} as alpine-base
+FROM --platform=${BUILDPLATFORM} golang:${GO_VERSION}-alpine${OS_VERESION} as base
 
 # NOTE: add libusb-dev to run with LEDGER_ENABLED=true
 RUN set -eux &&\
@@ -19,7 +19,7 @@ RUN set -eux &&\
 COPY ./bin/builder/ /usr/local/bin/
 
 ################################################################################
-FROM alpine-base as builder
+FROM base as builder
 
 ARG APP_NAME="terra"
 ARG BIN_NAME="${APP_NAME}d"
