@@ -1,0 +1,59 @@
+name: cosmos-build
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  cosmos-build:
+    uses: ./.github/workflows/docker-build.yml
+    secrets: inherit
+    strategy:
+      matrix:
+        #platform: ["linux/amd64", "linux/arm64"] # need arm runners
+        platform: ["linux/amd64"]
+        version:
+          - 11.0.0
+          - 10.0.2
+          - 10.0.1
+          - 10.0.0
+          - 9.1.1
+        
+        include:
+          # Include per os
+          - os: "alpine"
+            os_version: "3.16"
+
+          # Include all
+          - name: "cosmos"
+            go_version: "1.20"
+            repo: "cosmos/gaia"
+            user: "gaia"
+            binary: "gaiad"
+            build_command: "make install"
+            build_tags: "muslc"
+            mimalloc_version:
+            cosmos_build_options: "nostrip"
+            ldflags: ""
+            target: "prod"
+        
+    with:
+      name: ${{ matrix.name }}
+      os: ${{ matrix.os }}
+      os_version: ${{ matrix.os_version }}
+      platform: ${{ matrix.platform }}
+      version: ${{ matrix.version }}
+      go_version: ${{ matrix.go_version }}
+      repo: ${{ matrix.repo }}
+      user: ${{ matrix.user }}
+      binary: ${{ matrix.binary }}
+      build_command: ${{ matrix.build_command }}
+      build_tags: ${{ matrix.build_tags }}
+      mimalloc_version: ${{ matrix.mimalloc_version }}
+      cosmos_build_options: ${{ matrix.cosmos_build_options }}
+      ldflags: ${{ matrix.ldflags }}
+      target: ${{ matrix.target }}
