@@ -48,8 +48,8 @@ RUN set -eux && \
     go mod download -x
 
 # download wasmvm if version is specified
-RUN set -eux && \
-    WASMVM_VERSION=$(go list -m github.com/CosmWasm/wasmvm | cut -d ' ' -f 2) && \
+RUN set -ux && \
+    WASMVM_VERSION="$(go list -m github.com/CosmWasm/wasmvm | cut -d ' ' -f 2)" && \
     [ -n "${WASMVM_VERSION}" ] && install-wasmvm "${WASMVM_VERSION}"
 
 # build the binary
