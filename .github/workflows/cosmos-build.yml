@@ -39,36 +39,38 @@ jobs:
           - os: "alpine"
             os_version: "3.16"
        
-         # Include all
-          - name: "cosmos"
-            repo: "cosmos/gaia"
-            user: "gaia"
-            binary: "gaiad"
-            build_command: "make install"
-            build_tags: "muslc"
-            mimalloc_version:
-            cosmos_build_options: "nostrip"
-            ldflags: ""
-            target: "prod"
-            go_version: "1.20"
-            
           # Include per version
           - version: "9.1.1"
             go_version: "1.18"
 
+         # Include all
+          - binary: "gaiad"
+            build_command: "make install"
+            build_tags: "muslc"
+            chain_registry_name: "cosmos"
+            cosmos_build_options: "nostrip"
+            go_version: "1.20"
+            ldflags: ""
+            mimalloc_version: ""
+            name: "cosmos"
+            repo: "cosmos/gaia"
+            target: "prod"
+            user: "gaia"
+            
     with:
       name: ${{ matrix.name }}
-      os: ${{ matrix.os }}
-      os_version: ${{ matrix.os_version }}
-      platform: ${{ matrix.platform }}
-      version: ${{ matrix.version }}
-      go_version: ${{ matrix.go_version }}
-      repo: ${{ matrix.repo }}
-      user: ${{ matrix.user }}
       binary: ${{ matrix.binary }}
       build_command: ${{ matrix.build_command }}
       build_tags: ${{ matrix.build_tags }}
-      mimalloc_version: ${{ matrix.mimalloc_version }}
+      chain_registry_name: ${{ matrix.chain_registry_name }}
       cosmos_build_options: ${{ matrix.cosmos_build_options }}
+      go_version: ${{ matrix.go_version }}
       ldflags: ${{ matrix.ldflags }}
+      mimalloc_version: ${{ matrix.mimalloc_version }}
+      os: ${{ matrix.os }}
+      os_version: ${{ matrix.os_version }}
+      platform: ${{ matrix.platform }}
+      repo: ${{ matrix.repo }}
       target: ${{ matrix.target }}
+      user: ${{ matrix.user }}
+      version: ${{ matrix.version }}

@@ -16,7 +16,7 @@ RUN set -eux &&\
     bash \
     git
 
-COPY ./bin/builder/ /usr/local/bin/
+COPY ./bin/install-mimalloc ./bin/install-wasmvm /usr/local/bin/
 
 ################################################################################
 FROM base as builder
@@ -80,19 +80,35 @@ FROM --platform=${BUILDPLATFORM} alpine:${OS_VERESION} as prod
 ARG APP_NAME="terra"
 ARG BIN_NAME="${APP_NAME}d"
 ARG USER_NAME="${APP_NAME}"
+ARG CHAIN_REGISTRY_NAME
 
-# copy binary
+ENV APP_NAME=${APP_NAME} \
+    BIN_NAME=${BIN_NAME} \
+    USER_NAME=${USER_NAME} \
+    CHAIN_REGISTRY_NAME=${CHAIN_REGISTRY_NAME}
+
+# copy binary and entrypoint
 COPY --from=builder /go/bin/${BIN_NAME} /usr/local/bin/${BIN_NAME}
+COPY ./bin/entrypoint.sh /usr/local/bin/
 
 # install jq and create user
 RUN set -eux && \   
     apk update && \
     apk add --no-cache bash curl jq && \
     addgroup -g 1000 ${USER_NAME} && \
-    adduser -u 1000 -G ${USER_NAME} -D -h /home/${USER_NAME} ${USER_NAME} && \
+    adduser -u 1000 -G ${USER_NAME} -D -s /bin/bash -h /home/${USER_NAME} ${USER_NAME} && \
     ln -s /usr/local/bin/${BIN_NAME} /usr/local/bin/chaind
 
 # setup execution environment
 USER ${USER_NAME}
+SHELL [ "/bin/bash" ]
 WORKDIR /home/${USER_NAME}
+ENTRYPOINT [ "entrypoint.sh" ]
 CMD ["chaind", "start"]
+
+################################################################################
+FROM --platform=${BUILDPLATFORM} prod as dev
+
+COPY ./etc/mnemonics.json /etc/
+COPY ./bin/init-chain /etc/init.d/
+

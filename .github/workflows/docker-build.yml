@@ -7,6 +7,10 @@ on:
           description: "Name of the application"
           required: true
           type: string
+        chain_registry_name:
+          description: "Name of the application"
+          required: true
+          type: string
         binary:
           description: "Name of the binary"
           required: true
@@ -134,3 +138,4 @@ jobs:
             LDFLAGS=${{ inputs.ldflags }}
             MIMALLOC_VERSION=${{ inputs.mimalloc_version }}
             USER_NAME=${{ inputs.user }}
+            CHAIN_REGISTRY_NAME=${{ inputs.chain_registry_name }}
