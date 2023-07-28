@@ -99,16 +99,16 @@ jobs:
           labels: ${{ env.DOCKER_METADATA_OUTPUT_LABELS }}
           build-args: |
             GO_VERSION="${{ matrix.go_version }}"
-            ALPINE_VERSION="${{ matrix.alpine_version }}"
-            BUILDPLATFORM="${{ matrix.platform }}"
-            APP_NAME="${{ matrix.name }}"
-            BIN_NAME="${{ matrix.binary }}"
-            BUILD_COMMAND="${{ matrix.build_command }}"
-            BUILD_TAGS="${{ matrix.build_tags }}"
-            CHAIN_NAME="${{ matrix.name }}-1"
-            COSMOS_BUILD_OPTIONS="${{ matrix.cosmos_build_options }}"
-            GIT_TAG=v"${{ matrix.version }}"
-            GIT_REPO="${{ matrix.repo }}"
-            LDFLAGS="${{ matrix.ldflags }}"
-            MIMALLOC_VERSION="${{ matrix.mimalloc_version }}"
-            USER_NAME="${{ matrix.user }}"
+            ALPINE_VERSION=${{ matrix.alpine_version }}
+            BUILDPLATFORM=${{ matrix.platform }}
+            APP_NAME=${{ matrix.name }}
+            BIN_NAME=${{ matrix.binary }}
+            BUILD_COMMAND=${{ matrix.build_command }}
+            BUILD_TAGS=${{ matrix.build_tags }}
+            CHAIN_NAME=${{ matrix.name }}-1
+            COSMOS_BUILD_OPTIONS=${{ matrix.cosmos_build_options }}
+            GIT_TAG=v${{ matrix.version }}
+            GIT_REPO=${{ matrix.repo }}
+            LDFLAGS=${{ matrix.ldflags }}
+            MIMALLOC_VERSION=${{ matrix.mimalloc_version }}
+            USER_NAME=${{ matrix.user }}
