@@ -4,11 +4,9 @@ on:
   pull_request:
     branches:
       - main
-      - test
   push:
     branches:
       - main
-      - test
 
 jobs:
   build:
@@ -59,16 +57,16 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           images: |
             ghcr.io/base-${{ github.repository }}/${{ matrix.os }}${{ matrix.os_version }}
-            ${{ secrets.DOCKERHUB_USER }}/bae-${{ matrix.os }}${{ matrix.os_version }}
+            ${{ secrets.DOCKERHUB_USER }}/base-${{ matrix.os }}${{ matrix.os_version }}
           tags: |
             type=sha
-            type=edge,branch=test
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build docker image
         uses: docker/build-push-action@v4
         with:
           target: ${{ matrix.name }}
+          file: ${{ matrix.os }}.Dockerfile
           platforms: ${{ matrix.platform }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.DOCKER_METADATA_OUTPUT_TAGS }}

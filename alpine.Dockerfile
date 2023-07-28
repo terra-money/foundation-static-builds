@@ -1,9 +1,9 @@
 ARG GO_VERSION="1.20"
-ARG ALPINE_VERSION="3.16"
+ARG OS_VERESION="3.16"
 ARG BUILDPLATFORM=linux/amd64
 
 ################################################################################
-FROM --platform=${BUILDPLATFORM} golang:${GO_VERSION}-alpine${ALPINE_VERSION} as alpine-base
+FROM --platform=${BUILDPLATFORM} golang:${GO_VERSION}-alpine${OS_VERESION} as alpine-base
 
 # NOTE: add libusb-dev to run with LEDGER_ENABLED=true
 RUN set -eux &&\
@@ -73,7 +73,7 @@ RUN set -eux && \
 #     (file ${GOPATH}/bin/${BIN_NAME} | grep "statically linked")
 
 ################################################################################
-FROM --platform=${BUILDPLATFORM} alpine:${ALPINE_VERSION} as prod
+FROM --platform=${BUILDPLATFORM} alpine:${OS_VERESION} as prod
 
 # build args passed down to env var
 
