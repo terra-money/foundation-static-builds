@@ -37,12 +37,12 @@ jobs:
 
           # Include per version
           - version: 2.4.1
-            go_version: 1.20
+            go_version: "1.20"
             alpine_version: 3.16
           - version: 2.4.0
-            go_version: 1.20
+            go_version: "1.20"
             alpine_version: 3.16
-          - version: 2.3.5
+          - version: "2.3.5"
             go_version: 1.20
             alpine_version: 3.16
 
@@ -98,7 +98,7 @@ jobs:
           tags: ${{ env.DOCKER_METADATA_OUTPUT_TAGS }}
           labels: ${{ env.DOCKER_METADATA_OUTPUT_LABELS }}
           build-args: |
-            GO_VERSION="${{ matrix.go_version }}"
+            GO_VERSION=${{ matrix.go_version }}
             ALPINE_VERSION=${{ matrix.alpine_version }}
             BUILDPLATFORM=${{ matrix.platform }}
             APP_NAME=${{ matrix.name }}
