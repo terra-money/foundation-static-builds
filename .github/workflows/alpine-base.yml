@@ -20,10 +20,11 @@ jobs:
 
     strategy:
       matrix:
-        name: ["alpine-base"]
+        name: ["base"]
+        os: ["alpine"]
+        os_version: ["3.16"]
         platform: ["linux/amd64", "linux/arm64"]
         go_version: ["1.20"]
-        alpine_version: ["3.16"]
 
     steps:
       - name: Checkout
@@ -57,8 +58,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           images: |
-            ghcr.io/${{ github.repository }}/${{ matrix.name }}
-            ${{ secrets.DOCKERHUB_USER }}/${{ matrix.name }}
+            ghcr.io/base-${{ github.repository }}/${{ matrix.os }}${{ matrix.os_version }}
+            ${{ secrets.DOCKERHUB_USER }}/bae-${{ matrix.os }}${{ matrix.os_version }}
           tags: |
             type=sha
             type=edge,branch=test
@@ -74,5 +75,5 @@ jobs:
           labels: ${{ env.DOCKER_METADATA_OUTPUT_LABELS }}
           build-args: |
             GO_VERSION=${{ matrix.go_version }}
-            ALPINE_VERSION=${{ matrix.alpine_version }}
+            OS_VERSION=${{ matrix.os_version }}
             BUILDPLATFORM=${{ matrix.platform }}

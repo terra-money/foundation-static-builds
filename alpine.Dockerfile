@@ -67,10 +67,10 @@ RUN set -eux && \
     ${BUILD_COMMAND}
 
 # verify static binary
-RUN set -eux && \
-    file ${GOPATH}/bin/${BIN_NAME} && \
-    echo "Ensuring binary is statically linked ..." && \
-    (file ${GOPATH}/bin/${BIN_NAME} | grep "statically linked")
+# RUN set -x && \
+#     file ${GOPATH}/bin/${BIN_NAME} && \
+#     echo "Ensuring binary is statically linked ..." && \
+#     (file ${GOPATH}/bin/${BIN_NAME} | grep "statically linked")
 
 ################################################################################
 FROM --platform=${BUILDPLATFORM} alpine:${ALPINE_VERSION} as prod

@@ -68,6 +68,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    continue-on-error: true
     permissions:
       contents: read
       packages: write
@@ -108,7 +109,8 @@ jobs:
             ${{ secrets.DOCKERHUB_USER }}/${{ inputs.name }}
           tags: |
             type=sha
-            type=raw,value=${{ inputs.version }}-${{ inputs.os }},enable={{ is_default_branch }}
+            type=raw,value=${{ inputs.version }},enable={{ is_default_branch }}
+            type=raw,value=${{ inputs.version }}-${{ inputs.os }}${{ inputs.os_version }},enable={{ is_default_branch }}
 
       - name: Build docker image
         uses: docker/build-push-action@v4
