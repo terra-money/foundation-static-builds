@@ -13,6 +13,7 @@ on:
 jobs:
   build-terra:
     uses: ./.github/workflows/docker-build.yml
+    secrets: inherit
     strategy:
       matrix:
         platform: ["linux/amd64", "linux/arm64"]
