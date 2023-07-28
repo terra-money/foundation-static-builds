@@ -20,6 +20,10 @@ jobs:
           - 2.4.1
           - 2.4.0
           - 2.3.5
+          - 2.3.4
+          - 2.3.2
+          - 2.3.1
+          - 2.3.0
         
         include:
           # Include all
@@ -32,7 +36,7 @@ jobs:
             build_tags: "muslc"
             mimalloc_version:
             cosmos_build_options: "nostrip"
-            ldflags: "-extldflags '-Wl,-z,muldefs -static'"
+            ldflags: "-extldflags \"-Wl,-z,muldefs -static\""
             target: "prod"
 
           # Include per version
