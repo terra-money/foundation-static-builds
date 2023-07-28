@@ -4,9 +4,16 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - 'alpine.Dockerfile'
+      - '.github/workflows/alpine-base.yml'
+
   push:
     branches:
       - main
+    paths:
+      - 'alpine.Dockerfile'
+      - '.github/workflows/alpine-base.yml'
 
 jobs:
   build:
@@ -18,10 +25,10 @@ jobs:
 
     strategy:
       matrix:
+        platform: ["linux/amd64", "linux/arm64"]
         name: ["base"]
         os: ["alpine"]
         os_version: ["3.16"]
-        platform: ["linux/amd64", "linux/arm64"]
         go_version: ["1.20"]
 
     steps:
@@ -56,11 +63,12 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           images: |
-            ghcr.io/base-${{ github.repository }}/${{ matrix.os }}${{ matrix.os_version }}
-            ${{ secrets.DOCKERHUB_USER }}/base-${{ matrix.os }}${{ matrix.os_version }}
+            ghcr.io/base-${{ github.repository }}/${{ matrix.name }}
+            ${{ secrets.DOCKERHUB_USER }}/base/${{ matrix.name }}
           tags: |
             type=sha
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest,enable={{ is_default_branch }}
+            type=raw,value=${{ matrix.os }}${{ matrix.os_version }},enable={{ is_default_branch }}
 
       - name: Build docker image
         uses: docker/build-push-action@v4

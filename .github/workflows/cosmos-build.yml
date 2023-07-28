@@ -4,9 +4,20 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - 'bin/builder'
+      - 'alpine.Dockerfile'
+      - '.github/workflows/docker-build.yml'
+      - '.github/workflows/cosmos-build.yml'
+
   push:
     branches:
       - main
+    paths:
+      - 'bin/builder'
+      - 'alpine.Dockerfile'
+      - '.github/workflows/docker-build.yml'
+      - '.github/workflows/cosmos-build.yml'
 
 jobs:
   cosmos-build:
@@ -27,10 +38,9 @@ jobs:
           # Include per os
           - os: "alpine"
             os_version: "3.16"
-
-          # Include all
+       
+         # Include all
           - name: "cosmos"
-            go_version: "1.20"
             repo: "cosmos/gaia"
             user: "gaia"
             binary: "gaiad"
@@ -40,7 +50,12 @@ jobs:
             cosmos_build_options: "nostrip"
             ldflags: ""
             target: "prod"
-        
+            go_version: "1.20"
+            
+          # Include per version
+          - version: "9.1.1"
+            go_version: "1.18"
+
     with:
       name: ${{ matrix.name }}
       os: ${{ matrix.os }}

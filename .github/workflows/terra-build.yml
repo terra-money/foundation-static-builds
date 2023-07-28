@@ -4,9 +4,20 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - 'bin/builder'
+      - 'alpine.Dockerfile'
+      - '.github/workflows/docker-build.yml'
+      - '.github/workflows/terra-build.yml'
+
   push:
     branches:
       - main
+    paths:
+      - 'bin/builder'
+      - 'alpine.Dockerfile'
+      - '.github/workflows/docker-build.yml'
+      - '.github/workflows/terra-build.yml'
 
 jobs:
   terra-build:

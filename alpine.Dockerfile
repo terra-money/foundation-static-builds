@@ -50,7 +50,7 @@ RUN set -eux && \
 # download wasmvm if version is specified
 RUN set -ux && \
     WASMVM_VERSION="$(go list -m github.com/CosmWasm/wasmvm | cut -d ' ' -f 2)" && \
-    [ -n "${WASMVM_VERSION}" ] && install-wasmvm "${WASMVM_VERSION}"
+    [ -n "${WASMVM_VERSION}" ] && install-wasmvm "${WASMVM_VERSION}" || true
 
 # build the binary
 ENV APP_NAME=${APP_NAME} \

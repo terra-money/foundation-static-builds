@@ -2,73 +2,72 @@ name: docker-build
 
 on:
     workflow_call:
-        inputs: 
-            name:
-                description: "Name of the application"
-                required: true
-                type: string
-            binary:
-                description: "Name of the binary"
-                required: true
-                type: string
-            build_command:
-                description: "Build command"
-                required: true
-                type: string
-            build_tags:
-                description: "Build tags"
-                required: true
-                type: string
-            cosmos_build_options:
-                description: "Cosmos build options"
-                required: true
-                type: string
-            go_version:
-                description: "Go version"
-                required: true
-                type: string
-            os_version:
-                description: "Alpine version"
-                required: true
-                type: string
-            mimalloc_version:
-                description: "Mimalloc version"
-                required: true
-                type: string
-            ldflags:
-                description: "Ldflags"
-                required: true
-                type: string
-            os:
-                description: "OS"
-                required: true
-                type: string
-            platform:
-                description: "Platform"
-                required: true
-                type: string
-            repo:
-                description: "Repo"
-                required: true
-                type: string
-            target:
-                description: "Target"
-                required: true
-                type: string
-            user:
-                description: "User"
-                required: true
-                type: string
-            version:
-                description: "Version"
-                required: true
-                type: string
+      inputs: 
+        name:
+          description: "Name of the application"
+          required: true
+          type: string
+        binary:
+          description: "Name of the binary"
+          required: true
+          type: string
+        build_command:
+          description: "Build command"
+          required: true
+          type: string
+        build_tags:
+          description: "Build tags"
+          required: true
+          type: string
+        cosmos_build_options:
+          description: "Cosmos build options"
+          required: true
+          type: string
+        go_version:
+          description: "Go version"
+          required: true
+          type: string
+        os_version:
+          description: "Alpine version"
+          required: true
+          type: string
+        mimalloc_version:
+          description: "Mimalloc version"
+          required: true
+          type: string
+        ldflags:
+          description: "Ldflags"
+          required: true
+          type: string
+        os:
+          description: "OS"
+          required: true
+          type: string
+        platform:
+          description: "Platform"
+          required: true
+          type: string
+        repo:
+          description: "Repo"
+          required: true
+          type: string
+        target:
+          description: "Target"
+          required: true
+          type: string
+        user:
+          description: "User"
+          required: true
+          type: string
+        version:
+          description: "Version"
+          required: true
+          type: string
             
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    continue-on-error: true
     permissions:
       contents: read
       packages: write
