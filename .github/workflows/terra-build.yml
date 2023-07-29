@@ -33,15 +33,7 @@ jobs:
           - 2.3.5
         
         include:
-          # Include per os
-          - os: "alpine"
-            os_version: "3.16"
-
-          # Include per version
-          - version: "2.3.5"
-            go_version: "1.19"
-
-          # Include all
+          # Include Defaults (keep at top)
           - name: "terra"
             binary: "terrad"
             build_command: "make install"
@@ -54,6 +46,14 @@ jobs:
             repo: "terra-money/core"
             target: "prod"
             user: "terra"
+
+          # Includes per os
+          - os: "alpine"
+            os_version: "3.16"
+
+          # Includes per version
+          - version: "2.3.5"
+            go_version: "1.19"
         
     with:
       binary: ${{ matrix.binary }}

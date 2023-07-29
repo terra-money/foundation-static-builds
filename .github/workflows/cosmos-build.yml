@@ -35,15 +35,7 @@ jobs:
           - 9.1.1
         
         include:
-          # Include per os
-          - os: "alpine"
-            os_version: "3.16"
-       
-          # Include per version
-          - version: "9.1.1"
-            go_version: "1.18"
-
-         # Include all
+         # Include Defaults (keep at top)
           - binary: "gaiad"
             build_command: "make install"
             build_tags: "muslc"
@@ -56,6 +48,14 @@ jobs:
             repo: "cosmos/gaia"
             target: "prod"
             user: "gaia"
+
+          # Include per os
+          - os: "alpine"
+            os_version: "3.16"
+
+          # Include per version
+          - version: "9.1.1"
+            go_version: "1.18"
             
     with:
       name: ${{ matrix.name }}
