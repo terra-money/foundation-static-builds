@@ -63,8 +63,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           images: |
-            ghcr.io/base-${{ github.repository }}/${{ matrix.name }}
-            ${{ secrets.DOCKERHUB_USER }}/base/${{ matrix.name }}
+            ghcr.io/${{ github.repository }}/${{ matrix.name }}
+            ${{ secrets.DOCKERHUB_USER }}/${{ matrix.name }}
           tags: |
             type=sha
             type=raw,value=${{ matrix.os }}${{ matrix.os_version }},enable={{ is_default_branch }}

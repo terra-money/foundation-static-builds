@@ -11,8 +11,6 @@ services:
     image: terraformlabs/${APP_NAME}:${VERSION}
     user: root
     working_dir: /home/${APP_NAME}
-    deploy:
-      replicas: ${NUM_VALIDATORS}
     platform: linux/amd64
     command: >
       sh -c "./bin/init-chain && \
@@ -28,3 +26,5 @@ services:
       - ./mnemonics.json:/home/${APP_NAME}/mnemonics.json
     networks:
       - default
+    deploy:
+      replicas: ${NUM_VALIDATORS}
