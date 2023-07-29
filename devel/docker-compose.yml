@@ -1,0 +1,28 @@
+version: "3.9"
+
+volumes:
+  shared:
+
+networks:
+  default:
+
+services:
+  validator:
+    image: terraformlabs/${APP_NAME}:${VERSION}
+    deploy:
+      replicas: ${NUM_VALIDATORS}
+    platform: linux/amd64
+    command: >
+      sh -c "./bin/init-chain && \
+             ./bin/modify-app && \
+             ./bin/modify-config && \
+             exec ${BIN_NAME} start"
+    environment:
+      NUM_VALIDATORS: ${NUM_VALIDATORS}
+    volumes:
+      - /home/${USER_NAME}
+      - ./bin/:/home/${USER_NAME}/bin/
+      - shared:/home/${USER_NAME}/.shared/
+      - ./mnemonics.json:/home/${USER_NAME}/mnemonics.json
+    networks:
+      - default

@@ -97,6 +97,8 @@ RUN set -eux && \
     apk add --no-cache bash curl jq && \
     addgroup -g 1000 ${USER_NAME} && \
     adduser -u 1000 -G ${USER_NAME} -D -s /bin/bash -h /home/${USER_NAME} ${USER_NAME} && \
+    mkdir -p /home/${USER_NAME}/.shared && \
+    chown ${USER_NAME}:${USER_NAME} /home/${USER_NAME}/.shared && \
     ln -s /usr/local/bin/${BIN_NAME} /usr/local/bin/chaind
 
 # setup execution environment
@@ -106,9 +108,5 @@ WORKDIR /home/${USER_NAME}
 ENTRYPOINT [ "entrypoint.sh" ]
 CMD ["chaind", "start"]
 
-################################################################################
-FROM --platform=${BUILDPLATFORM} prod as dev
 
-COPY ./etc/mnemonics.json /etc/
-COPY ./bin/init-chain /etc/init.d/
 

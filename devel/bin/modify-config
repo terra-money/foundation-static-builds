@@ -1,0 +1,5 @@
+#!/bin/sh -eu
+
+# modify the config.toml
+sed -e 's/^laddr *=\s*\"tcp:\/\/127.0.0.1/laddr = \"tcp:\/\/0.0.0.0/' \
+    -i ${HOME}/.*/config/config.toml

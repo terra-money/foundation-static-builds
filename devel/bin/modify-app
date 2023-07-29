@@ -1,0 +1,13 @@
+#!/bin/sh -eu
+
+APP_NAME=${APP_NAME:-"chain"}
+DENOM=${DENOM:-"u$(echo ${APP_NAME} | head -c 4)"}
+
+# modify the app.toml
+sed -e 's/localhost/0.0.0.0/' \
+    -e 's/^minimum-gas-prices =.*/minimum-gas-prices = "0.015'${DENOM}'"/' \
+    -e 's/^denom-to-suggest =.*/denom-to-suggest = "'${DENOM}'"/' \
+    -e 's/enabled-unsafe-cors = false/enabled-unsafe-cors = true/' \
+    -e '/^\[api\]/,/\[rosetta\]/ s|^enable *=.*|enable = true|' \
+    -e '/^\[api\]/,/\[rosetta\]/ s|^swagger *=.*|swagger = true|' \
+    -i ${HOME}/.*/config/app.toml
