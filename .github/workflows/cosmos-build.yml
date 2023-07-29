@@ -47,7 +47,6 @@ jobs:
             name: "cosmos"
             repo: "cosmos/gaia"
             target: "prod"
-            user: "gaia"
 
           # Include per os
           - os: "alpine"
@@ -72,5 +71,4 @@ jobs:
       platform: ${{ matrix.platform }}
       repo: ${{ matrix.repo }}
       target: ${{ matrix.target }}
-      user: ${{ matrix.user }}
       version: ${{ matrix.version }}

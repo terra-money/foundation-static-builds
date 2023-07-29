@@ -79,12 +79,10 @@ FROM --platform=${BUILDPLATFORM} alpine:${OS_VERESION} as prod
 
 ARG APP_NAME="terra"
 ARG BIN_NAME="${APP_NAME}d"
-ARG USER_NAME="${APP_NAME}"
 ARG CHAIN_REGISTRY_NAME
 
 ENV APP_NAME=${APP_NAME} \
     BIN_NAME=${BIN_NAME} \
-    USER_NAME=${USER_NAME} \
     CHAIN_REGISTRY_NAME=${CHAIN_REGISTRY_NAME}
 
 # copy binary and entrypoint
@@ -95,16 +93,16 @@ COPY ./bin/entrypoint.sh /usr/local/bin/
 RUN set -eux && \   
     apk update && \
     apk add --no-cache bash curl jq && \
-    addgroup -g 1000 ${USER_NAME} && \
-    adduser -u 1000 -G ${USER_NAME} -D -s /bin/bash -h /home/${USER_NAME} ${USER_NAME} && \
-    mkdir -p /home/${USER_NAME}/.shared && \
-    chown ${USER_NAME}:${USER_NAME} /home/${USER_NAME}/.shared && \
+    addgroup -g 1000 ${APP_NAME} && \
+    adduser -u 1000 -G ${APP_NAME} -D -s /bin/bash -h /home/${APP_NAME} ${APP_NAME} && \
+    mkdir -p /home/${APP_NAME}/.shared/config && \
+    chown -R ${APP_NAME}:${APP_NAME} /home/${APP_NAME}/.shared/config && \
     ln -s /usr/local/bin/${BIN_NAME} /usr/local/bin/chaind
 
 # setup execution environment
-USER ${USER_NAME}
+USER ${APP_NAME}
 SHELL [ "/bin/bash" ]
-WORKDIR /home/${USER_NAME}
+WORKDIR /home/${APP_NAME}
 ENTRYPOINT [ "entrypoint.sh" ]
 CMD ["chaind", "start"]
 

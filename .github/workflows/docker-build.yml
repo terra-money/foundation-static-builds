@@ -3,14 +3,6 @@ name: docker-build
 on:
     workflow_call:
       inputs: 
-        name:
-          description: "Name of the application"
-          required: true
-          type: string
-        chain_registry_name:
-          description: "Name of the application"
-          required: true
-          type: string
         binary:
           description: "Name of the binary"
           required: true
@@ -23,6 +15,10 @@ on:
           description: "Build tags"
           required: true
           type: string
+        chain_registry_name:
+          description: "Name of the application"
+          required: true
+          type: string
         cosmos_build_options:
           description: "Cosmos build options"
           required: true
@@ -31,20 +27,24 @@ on:
           description: "Go version"
           required: true
           type: string
-        os_version:
-          description: "Alpine version"
+        ldflags:
+          description: "Ldflags"
           required: true
           type: string
         mimalloc_version:
           description: "Mimalloc version"
           required: true
           type: string
-        ldflags:
-          description: "Ldflags"
+        name:
+          description: "Name of the application"
           required: true
           type: string
         os:
           description: "OS"
+          required: true
+          type: string
+        os_version:
+          description: "Alpine version"
           required: true
           type: string
         platform:
@@ -59,15 +59,10 @@ on:
           description: "Target"
           required: true
           type: string
-        user:
-          description: "User"
-          required: true
-          type: string
         version:
           description: "Version"
           required: true
           type: string
-            
 
 jobs:
   build:
@@ -125,17 +120,16 @@ jobs:
           tags: ${{ env.DOCKER_METADATA_OUTPUT_TAGS }}
           labels: ${{ env.DOCKER_METADATA_OUTPUT_LABELS }}
           build-args: |
-            GO_VERSION=${{ inputs.go_version }}
-            OS_VERSION=${{ inputs.os_version }}
-            BUILDPLATFORM=${{ inputs.platform }}
             APP_NAME=${{ inputs.name }}
             BIN_NAME=${{ inputs.binary }}
             BUILD_COMMAND=${{ inputs.build_command }}
+            BUILDPLATFORM=${{ inputs.platform }}
             BUILD_TAGS=${{ inputs.build_tags }}
+            CHAIN_REGISTRY_NAME=${{ inputs.chain_registry_name }}
             COSMOS_BUILD_OPTIONS=${{ inputs.cosmos_build_options }}
             GIT_TAG=v${{ inputs.version }}
             GIT_REPO=${{ inputs.repo }}
+            GO_VERSION=${{ inputs.go_version }}
             LDFLAGS=${{ inputs.ldflags }}
             MIMALLOC_VERSION=${{ inputs.mimalloc_version }}
-            USER_NAME=${{ inputs.user }}
-            CHAIN_REGISTRY_NAME=${{ inputs.chain_registry_name }}
+            OS_VERSION=${{ inputs.os_version }}

@@ -45,7 +45,6 @@ jobs:
             mimalloc_version:
             repo: "terra-money/core"
             target: "prod"
-            user: "terra"
 
           # Includes per os
           - os: "alpine"
@@ -70,5 +69,4 @@ jobs:
       platform: ${{ matrix.platform }}
       repo: ${{ matrix.repo }}
       target: ${{ matrix.target }}
-      user: ${{ matrix.user }}
       version: ${{ matrix.version }}
