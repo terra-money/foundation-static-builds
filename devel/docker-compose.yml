@@ -9,6 +9,8 @@ networks:
 services:
   validator:
     image: terraformlabs/${APP_NAME}:${VERSION}
+    user: root
+    working_dir: /home/${APP_NAME}
     deploy:
       replicas: ${NUM_VALIDATORS}
     platform: linux/amd64
@@ -20,9 +22,9 @@ services:
     environment:
       NUM_VALIDATORS: ${NUM_VALIDATORS}
     volumes:
-      - /home/${USER_NAME}
-      - ./bin/:/home/${USER_NAME}/bin/
-      - shared:/home/${USER_NAME}/.shared/
-      - ./mnemonics.json:/home/${USER_NAME}/mnemonics.json
+      - /home/${APP_NAME}
+      - ./bin/:/home/${APP_NAME}/bin/
+      - shared:/home/${APP_NAME}/.shared/
+      - ./mnemonics.json:/home/${APP_NAME}/mnemonics.json
     networks:
       - default

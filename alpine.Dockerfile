@@ -95,8 +95,6 @@ RUN set -eux && \
     apk add --no-cache bash curl jq && \
     addgroup -g 1000 ${APP_NAME} && \
     adduser -u 1000 -G ${APP_NAME} -D -s /bin/bash -h /home/${APP_NAME} ${APP_NAME} && \
-    mkdir -p /home/${APP_NAME}/.shared/config && \
-    chown -R ${APP_NAME}:${APP_NAME} /home/${APP_NAME}/.shared/config && \
     ln -s /usr/local/bin/${BIN_NAME} /usr/local/bin/chaind
 
 # setup execution environment
