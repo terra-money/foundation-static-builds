@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-set -Eeuox pipefail
+set -Eeuo pipefail
 
 # This script is used to initialize the chain
 
 # The following environment variables are required:
 APP_NAME=${APP_NAME:-"chain"}
-APP_HOME=${APP_HOME:-"/home/${APP_NAME}"}
 BIN_NAME=${BIN_NAME:-"chaind"}
 CHAIN_NAME=${CHAIN_NAME:-"${APP_NAME}-devnet"}
 DENOM=${DENOM:-"u$(echo ${APP_NAME} | head -c 4)"}
@@ -15,8 +14,8 @@ NUM_VALIDATORS=${NUM_VALIDATORS:-"$(jq -r '.mnemonics | length' ${MNEMONICS_JSON
 VALIDATOR_ID=0
 
 # load environment variables
-if [ -f ${APP_HOME}/.env ]; then
-    . ${APP_HOME}/.env
+if [ -f ${HOME}/.env ]; then
+    . ${HOME}/.env
 fi
 
 # Cosmos SDK v0.47 settings
@@ -40,11 +39,11 @@ select_num(){
     elif [ ${VALIDATOR_ID} -ge ${NUM_VALIDATORS} ]; then
         VALIDATOR_ID=0
     fi
-    if [ -f ${APP_HOME}/.shared/validator-${VALIDATOR_ID} ]; then
+    if [ -f ${HOME}/.shared/claims/validator-${VALIDATOR_ID} ]; then
         select_num $((VALIDATOR_ID++))
     fi
-    touch ${APP_HOME}/.shared/validator-${VALIDATOR_ID}
-    echo "VALIDATOR_ID=${VALIDATOR_ID}" > ${APP_HOME}/.env
+    touch ${HOME}/.shared/claims/validator-${VALIDATOR_ID}
+    echo "VALIDATOR_ID=${VALIDATOR_ID}" > ${HOME}/.env
 }
 
 initialize_chain(){
@@ -61,7 +60,7 @@ initialize_account(){
     local validator="$1"
     echo "Initializing account ${validator}..."
     jq -r ".mnemonics | .[] |select(.name ==\"${validator}\") | .mnemonic" ${MNEMONICS_JSON} |
-    ${BIN_NAME} keys add ${validator} --keyring-backend test --recover --output json >> ${APP_HOME}/keys.json
+    ${BIN_NAME} keys add ${validator} --keyring-backend test --recover --output json >> ${HOME}/keys.json
     ${BIN_NAME} ${GENESIS} add-genesis-account ${validator} 1000000000000${DENOM} --keyring-backend test
 }
 
@@ -76,11 +75,12 @@ create_gentx(){
     local validator="$1"
     echo "Creating Gentx for ${validator}..."
     # create a gentx for the validator and add it to the genesis file
-    mkdir -p ${APP_HOME}/.shared/gentxs
     ${BIN_NAME} ${GENESIS} gentx ${validator} 10000000000${DENOM} \
         --keyring-backend test \
-        --chain-id=${CHAIN_NAME} \
-        --output-document=${APP_HOME}/.shared/gentxs/${validator}.gentx.json
+        --chain-id=${CHAIN_NAME}
+    mkdir -p ${HOME}/.shared/gentxs
+    cp -a ${HOME}/.*/config/gentx/* ${HOME}/.shared/gentxs/${validator}.gentx.json
+     
 }
 
 initialize_validator(){
@@ -99,7 +99,7 @@ initialize_genesis(){
     local validator
     # wait for all gentxs to be created
     for validator in $(jq -r ".mnemonics[:${NUM_VALIDATORS}] | .[].name" ${MNEMONICS_JSON}); do 
-        until [ -f ${APP_HOME}/.shared/gentxs/${validator}.gentx.json ]; do
+        until [ -f ${HOME}/.shared/gentxs/${validator}.gentx.json ]; do
             echo "Waiting for ${validator}.gentx.json to be created..."
             sleep 1
         done
@@ -107,23 +107,23 @@ initialize_genesis(){
 
     echo "Generating Genesis..."
     ${BIN_NAME} ${GENESIS} collect-gentxs \
-    --gentx-dir=${APP_HOME}/.shared/gentxs \
-    > /dev/null 2>&1
+    --gentx-dir=${HOME}/.shared/gentxs \
+    > /dev/null
 
     # modify the genesis.json
     sed -e "s/stake/${DENOM}/g" \
-        -i ${APP_HOME}/.*/config/genesis.json
+        -i ${HOME}/.*/config/genesis.json
     
-    cp -a ${APP_HOME}/.${APP_NAME}/config/genesis.json ${APP_HOME}/.shared/genesis.json
+    cp -a ${HOME}/.${APP_NAME}/config/genesis.json ${HOME}/.shared/genesis.json
 }
 
 wait_for_genesis(){
     # wait for genesis.json to be created
-    until [ -f ${APP_HOME}/.shared/genesis.json ]; do
+    until [ -f ${HOME}/.shared/genesis.json ]; do
         echo "Waiting for genesis.json to be created..."
         sleep 1
     done
-    cp -a ${APP_HOME}/.shared/genesis.json ${APP_HOME}/.${APP_NAME}/config/genesis.json
+    cp -a ${HOME}/.shared/genesis.json ${HOME}/.${APP_NAME}/config/genesis.json
 }
 
 is_sourced() {
@@ -135,11 +135,12 @@ is_sourced() {
 
 main(){
     # genesis.json in shared
-    if [ -f ${APP_HOME}/.shared/genesis.json ]; then
-        cp -a ${APP_HOME}/.shared/genesis.json ${APP_HOME}/.${APP_NAME}/config/genesis.json
+    if [ -f ${HOME}/.shared/genesis.json ]; then
+        cp -a ${HOME}/.shared/genesis.json ${HOME}/.${APP_NAME}/config/genesis.json
     fi
 
-    if [ ! -f ${APP_HOME}/.${APP_NAME}/config/genesis.json ]; then
+    if [ ! -f ${HOME}/.${APP_NAME}/config/genesis.json ]; then
+        mkdir -p ${HOME}/.shared/claims
         select_num
         initialize_validator ${VALIDATOR_ID}
         if [ ${VALIDATOR_ID} -eq 0 ]; then

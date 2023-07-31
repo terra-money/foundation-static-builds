@@ -18,6 +18,8 @@ services:
              ./bin/modify-config && \
              exec ${BIN_NAME} start"
     environment:
+      HOME: /home/${APP_NAME}
+      DENOM: ${DENOM}
       NUM_VALIDATORS: ${NUM_VALIDATORS}
     volumes:
       - /home/${APP_NAME}
