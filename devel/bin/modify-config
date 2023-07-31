@@ -1,5 +1,7 @@
-#!/bin/sh -eu
+#!/bin/sh -eux
 
 # modify the config.toml
 sed -e 's/^laddr *=\s*\"tcp:\/\/127.0.0.1/laddr = \"tcp:\/\/0.0.0.0/' \
+    -e 's/^cors_allowed_origins *=.*/cors_allowed_origins = ["*"]/' \
+    -e 's/^addr_book_strict *=.*/addr_book_strict = false/' \
     -i ${HOME}/.*/config/config.toml

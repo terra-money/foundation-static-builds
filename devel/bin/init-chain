@@ -108,7 +108,7 @@ initialize_genesis(){
     echo "Generating Genesis..."
     ${BIN_NAME} ${GENESIS} collect-gentxs \
     --gentx-dir=${HOME}/.shared/gentxs \
-    > /dev/null
+    > /dev/null 2>&1
 
     # modify the genesis.json
     sed -e "s/stake/${DENOM}/g" \
