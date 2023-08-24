@@ -40,11 +40,15 @@ on:
           required: true
           type: string
         os:
-          description: "OS"
+          description: "Os type linux,darwin etc"
           required: true
           type: string
-        os_version:
-          description: "Alpine version"
+        arch:
+          description: "Architecture"
+          required: true
+          type: string
+        distro:
+          description: "Linux distribution"
           required: true
           type: string
         platform:
@@ -108,18 +112,20 @@ jobs:
           tags: |
             type=sha
             type=raw,value=${{ inputs.version }},enable={{ is_default_branch }}
-            type=raw,value=${{ inputs.version }}-${{ inputs.os }}${{ inputs.os_version }},enable={{ is_default_branch }}
+            type=raw,value=${{ inputs.version }}-${{ inputs.distro }}${{ inputs.distro_version }},enable={{ is_default_branch }}
 
       - name: Build docker image
         uses: docker/build-push-action@v4
         with:
           target: ${{ inputs.target }}
-          file: ./${{ inputs.os }}.Dockerfile
+          file: ./${{ inputs.distro }}.Dockerfile
           platforms: ${{ inputs.platform }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.DOCKER_METADATA_OUTPUT_TAGS }}
           labels: ${{ env.DOCKER_METADATA_OUTPUT_LABELS }}
           build-args: |
+            OS=${{ inputs.os }}
+            ARCH=${{ inputs.arch }}
             APP_NAME=${{ inputs.name }}
             BIN_NAME=${{ inputs.binary }}
             BUILD_COMMAND=${{ inputs.build_command }}
@@ -132,4 +138,3 @@ jobs:
             GO_VERSION=${{ inputs.go_version }}
             LDFLAGS=${{ inputs.ldflags }}
             MIMALLOC_VERSION=${{ inputs.mimalloc_version }}
-            OS_VERSION=${{ inputs.os_version }}

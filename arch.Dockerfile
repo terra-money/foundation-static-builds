@@ -1,25 +1,26 @@
+ARG OS=linux
+ARG ARCH=amd64
+ARG BUILDPLATFORM=${OS}/${ARCH}
+ARG DISTRO_VERSION="2023091804"
+ARG BASE_IMAGE="binhex/arch-base:${DISTRO_VERSION}"
+
+# ################################################################################
+FROM --platform=${BUILDPLATFORM} ${BASE_IMAGE} as base
+
+ARG OS
+ARG ARCH
 ARG GO_VERSION="1.20.8"
-ARG BUILDPLATFORM=linux/amd64
 
-################################################################################
-FROM --platform=${BUILDPLATFORM} golang:${GO_VERSION}-alpine as base
-
-# NOTE: add libusb-dev to run with LEDGER_ENABLED=true
-RUN set -eu &&\
-    apk update &&\
-    apk add --no-cache \
-    ca-certificates \
-    linux-headers \
-    build-base \
-    gcompat \
-    cmake \
-    bash \
-    curl \
-    git
+# # NOTE: add libusb-dev to run with LEDGER_ENABLED=true
+RUN set -eu & \
+    pacman -Syyu --noconfirm linux-headers base-devel glibc git && \
+    curl -sSL https://go.dev/dl/go${GO_VERSION}.${OS}-${ARCH}.tar.gz | \
+    tar -C / -xz && \
+    ln -s /go/bin/go /usr/local/bin/go
 
 COPY ./bin/install-mimalloc ./bin/install-wasmvm /usr/local/bin/
 
-################################################################################
+# ################################################################################
 FROM base as builder
 
 ARG APP_NAME="terra"
@@ -29,10 +30,12 @@ ARG BUILD_TAGS="muslc"
 ARG COSMOS_BUILD_OPTIONS="nostrip"
 ARG GIT_TAG="v2.4.1"
 ARG GIT_REPO="terra-money/core"
-#ARG LDFLAGS="-extldflags '-L/go/src/mimalloc/build -lmimalloc -Wl,-z,muldefs -static'"
-ARG LDFLAGS='-linkmode external -extldflags "-Wl,-z,muldefs -static"'
+# ARG LDFLAGS="-extldflags '-L/go/src/mimalloc/build -lmimalloc -Wl,-z,muldefs -static'"
+ARG LDFLAGS='-extldflags "-Wl,-z,muldefs -static"'
 ARG MIMALLOC_VERSION
+# ARG MIMALLOC_VERSION="v2.1.2"
 
+ENV GOPATH=/go
 ENV MIMALLOC_VERSION=${MIMALLOC_VERSION}
 # install mimalloc if version is specified
 RUN set -eu && \
@@ -73,8 +76,8 @@ RUN set -x && \
     echo "Ensuring binary is statically linked ..." && \
     (file ${GOPATH}/bin/${BIN_NAME} | grep "statically linked")
 
-################################################################################
-FROM --platform=${BUILDPLATFORM} alpine:3.18 as prod
+# ################################################################################
+FROM --platform=${BUILDPLATFORM} ${BASE_IMAGE} as prod
 
 # build args passed down to env var
 
@@ -92,10 +95,9 @@ COPY ./bin/entrypoint.sh /usr/local/bin/
 
 # install jq and create user
 RUN set -eux && \   
-    apk update && \
-    apk add --no-cache bash curl jq && \
-    addgroup -g 1000 ${APP_NAME} && \
-    adduser -u 1000 -G ${APP_NAME} -D -s /bin/bash -h /home/${APP_NAME} ${APP_NAME} && \
+    pacman -Syyu --noconfirm jq && \
+    groupadd -g 1000 ${APP_NAME} && \
+    useradd -u 1000 -g ${APP_NAME} -s /bin/bash -d /home/${APP_NAME} ${APP_NAME} && \
     ln -s /usr/local/bin/${BIN_NAME} /usr/local/bin/chaind
 
 # setup execution environment
@@ -104,6 +106,5 @@ SHELL [ "/bin/bash" ]
 WORKDIR /home/${APP_NAME}
 ENTRYPOINT [ "entrypoint.sh" ]
 CMD ["chaind", "start"]
-
 
 

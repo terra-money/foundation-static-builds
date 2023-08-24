@@ -27,9 +27,8 @@ jobs:
       matrix:
         platform: ["linux/amd64", "linux/arm64"]
         name: ["base"]
-        os: ["alpine"]
-        os_version: ["3.16"]
-        go_version: ["1.20"]
+        distro: ["alpine", "arch"]
+        go_version: ["1.20.8"]
 
     steps:
       - name: Checkout
@@ -73,12 +72,11 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           target: ${{ matrix.name }}
-          file: ${{ matrix.os }}.Dockerfile
+          file: ${{ matrix.distro }}.Dockerfile
           platforms: ${{ matrix.platform }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.DOCKER_METADATA_OUTPUT_TAGS }}
           labels: ${{ env.DOCKER_METADATA_OUTPUT_LABELS }}
           build-args: |
             GO_VERSION=${{ matrix.go_version }}
-            OS_VERSION=${{ matrix.os_version }}
             BUILDPLATFORM=${{ matrix.platform }}

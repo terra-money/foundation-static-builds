@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'bin/builder'
+      - 'arch.Dockerfile'
       - 'alpine.Dockerfile'
       - '.github/workflows/docker-build.yml'
       - '.github/workflows/terra-build.yml'
@@ -15,6 +16,7 @@ on:
       - main
     paths:
       - 'bin/builder'
+      - 'arch.Dockerfile'
       - 'alpine.Dockerfile'
       - '.github/workflows/docker-build.yml'
       - '.github/workflows/terra-build.yml'
@@ -24,13 +26,15 @@ jobs:
     uses: ./.github/workflows/docker-build.yml
     secrets: inherit
     strategy:
+      fail-fast: false
       matrix:
         #platform: ["linux/amd64", "linux/arm64"] # need arm runners
         platform: ["linux/amd64"]
+        distro: ["alpine", "arch"]
         version:
-          - 2.4.1
-          - 2.4.0
-          - 2.3.5
+          - "2.4.1"
+          - "2.4.0"
+          - "2.3.5"
         
         include:
           # Include Defaults (keep at top)
@@ -40,19 +44,22 @@ jobs:
             build_tags: "muslc"
             chain_registry_name: "terra2"
             cosmos_build_options: "nostrip"
-            go_version: "1.20"
-            ldflags: "-extldflags \"-Wl,-z,muldefs -static\""
+            go_version: "1.20.8"
             mimalloc_version:
             repo: "terra-money/core"
             target: "prod"
+            os: "linux"
+            arch: "amd64"
 
-          # Includes per os
-          - os: "alpine"
-            os_version: "3.16"
+          - distro: alpine
+            ldflags: "-linkmode external -extldflags \"-Wl,-z,muldefs -static\""
+
+          - distro: arch
+            ldflags: ""
 
           # Includes per version
           - version: "2.3.5"
-            go_version: "1.19"
+            go_version: "1.19.13"
         
     with:
       binary: ${{ matrix.binary }}
@@ -65,7 +72,8 @@ jobs:
       mimalloc_version: ${{ matrix.mimalloc_version }}
       name: ${{ matrix.name }}
       os: ${{ matrix.os }}
-      os_version: ${{ matrix.os_version }}
+      arch: ${{ matrix.arch }}
+      distro: ${{ matrix.distro }}
       platform: ${{ matrix.platform }}
       repo: ${{ matrix.repo }}
       target: ${{ matrix.target }}

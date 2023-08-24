@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'bin/builder'
+      - 'arch.Dockerfile'
       - 'alpine.Dockerfile'
       - '.github/workflows/docker-build.yml'
       - '.github/workflows/gaia-build.yml'
@@ -15,6 +16,7 @@ on:
       - main
     paths:
       - 'bin/builder'
+      - 'arch.Dockerfile'
       - 'alpine.Dockerfile'
       - '.github/workflows/docker-build.yml'
       - '.github/workflows/gaia-build.yml'
@@ -24,9 +26,11 @@ jobs:
     uses: ./.github/workflows/docker-build.yml
     secrets: inherit
     strategy:
+      fail-fast: false
       matrix:
         #platform: ["linux/amd64", "linux/arm64"] # need arm runners
         platform: ["linux/amd64"]
+        distro: ["alpine", "arch"]
         version:
           - 11.0.0
           - 10.0.2
@@ -41,20 +45,18 @@ jobs:
             build_tags: "muslc"
             chain_registry_name: "cosmos"
             cosmos_build_options: "nostrip"
-            go_version: "1.20"
-            ldflags: ""
             mimalloc_version: ""
+            go_version: "1.20.8"
             name: "gaia"
             repo: "cosmos/gaia"
             target: "prod"
-
-          # Include per os
-          - os: "alpine"
-            os_version: "3.16"
+            os: linux
+            arch: amd64
+            ldflags: "-linkmode external -extldflags \"-Wl,-z,muldefs -static\""
 
           # Include per version
           - version: "9.1.1"
-            go_version: "1.18"
+            go_version: "1.18.10"
             
     with:
       name: ${{ matrix.name }}
@@ -67,7 +69,8 @@ jobs:
       ldflags: ${{ matrix.ldflags }}
       mimalloc_version: ${{ matrix.mimalloc_version }}
       os: ${{ matrix.os }}
-      os_version: ${{ matrix.os_version }}
+      arch: ${{ matrix.arch }}
+      distro: ${{ matrix.distro }}
       platform: ${{ matrix.platform }}
       repo: ${{ matrix.repo }}
       target: ${{ matrix.target }}
