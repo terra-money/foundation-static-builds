@@ -22,7 +22,7 @@ on:
       - '.github/workflows/migaloo-build.yml'
 
 jobs:
-  terra-build:
+  migaloo-build:
     uses: ./.github/workflows/docker-build.yml
     secrets: inherit
     strategy:

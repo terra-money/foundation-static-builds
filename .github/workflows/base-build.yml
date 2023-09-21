@@ -16,7 +16,7 @@ on:
       - '.github/workflows/base-build.yml'
 
 jobs:
-  build:
+  base-build:
     runs-on: ubuntu-latest
 
     permissions:

@@ -22,7 +22,7 @@ on:
       - '.github/workflows/mars-build.yml'
 
 jobs:
-  terra-build:
+  mars-build:
     uses: ./.github/workflows/docker-build.yml
     secrets: inherit
     strategy:

@@ -22,7 +22,7 @@ on:
       - '.github/workflows/kujira-build.yml'
 
 jobs:
-  terra-build:
+  kujira-build:
     uses: ./.github/workflows/docker-build.yml
     secrets: inherit
     strategy:
@@ -45,7 +45,7 @@ jobs:
             binary: "kujirad"
             build_command: "make install"
             chain_registry_name: "kujira"
-            go_version: "1.20.8"
+            go_version: "1.19.7"
             repo: "Team-Kujira/core"
             os: "linux"
             arch: "amd64"
