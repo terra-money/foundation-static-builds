@@ -19,11 +19,11 @@ if [ -f ${HOME}/.env ]; then
 fi
 
 # Cosmos SDK v0.47 settings
-if ${BIN_NAME} version --long | grep 'cosmos_sdk_version: v0.47'; then
+if ${BIN_NAME} version --long | grep 'cosmos_sdk_version: v0.47]'; then
     GENESIS="genesis"
     ADD_INIT_FLAGS="--default-denom=${DENOM}"
 else
-    GENESIS=""
+    GENESIS="${GENESIS:-""}"
     ADD_INIT_FLAGS=""
 fi
 
@@ -114,7 +114,7 @@ initialize_genesis(){
     sed -e "s/stake/${DENOM}/g" \
         -i ${HOME}/.*/config/genesis.json
     
-    cp -a ${HOME}/.${APP_NAME}/config/genesis.json ${HOME}/.shared/genesis.json
+    cp -a ${HOME}/.${APP_NAME}*/config/genesis.json ${HOME}/.shared/genesis.json
 }
 
 wait_for_genesis(){
@@ -123,7 +123,7 @@ wait_for_genesis(){
         echo "Waiting for genesis.json to be created..."
         sleep 1
     done
-    cp -a ${HOME}/.shared/genesis.json ${HOME}/.${APP_NAME}/config/genesis.json
+    cp -a ${HOME}/.shared/genesis.json ${HOME}/.${APP_NAME}*/config/genesis.json
 }
 
 is_sourced() {
@@ -136,10 +136,10 @@ is_sourced() {
 main(){
     # genesis.json in shared
     if [ -f ${HOME}/.shared/genesis.json ]; then
-        cp -a ${HOME}/.shared/genesis.json ${HOME}/.${APP_NAME}/config/genesis.json
+        cp -a ${HOME}/.shared/genesis.json ${HOME}/.${APP_NAME}*/config/genesis.json
     fi
 
-    if [ ! -f ${HOME}/.${APP_NAME}/config/genesis.json ]; then
+    if [ ! -f ${HOME}/.${APP_NAME}*/config/genesis.json ]; then
         mkdir -p ${HOME}/.shared/claims
         select_num
         initialize_validator ${VALIDATOR_ID}
