@@ -43,7 +43,7 @@ jobs:
             build_command: "make install"
             chain_registry_name: "migaloo"
             go_version: "1.20.8"
-            repo: "mars-protocol/hub"
+            repo: "White-Whale-Defi-Platform/migaloo-chain"
             os: "linux"
             arch: "amd64"
         
