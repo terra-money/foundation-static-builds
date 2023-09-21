@@ -42,17 +42,13 @@ jobs:
          # Include Defaults (keep at top)
           - binary: "gaiad"
             build_command: "make install"
-            build_tags: "muslc"
             chain_registry_name: "cosmos"
-            cosmos_build_options: "nostrip"
-            mimalloc_version: ""
             go_version: "1.20.8"
             name: "gaia"
             repo: "cosmos/gaia"
-            target: "prod"
             os: linux
             arch: amd64
-            ldflags: "-linkmode external -extldflags \"-Wl,-z,muldefs -static\""
+            denom: uatom
 
           # Include per version
           - version: "9.1.1"
@@ -62,16 +58,12 @@ jobs:
       name: ${{ matrix.name }}
       binary: ${{ matrix.binary }}
       build_command: ${{ matrix.build_command }}
-      build_tags: ${{ matrix.build_tags }}
       chain_registry_name: ${{ matrix.chain_registry_name }}
-      cosmos_build_options: ${{ matrix.cosmos_build_options }}
+      denom: ${{ matrix.denom }}
       go_version: ${{ matrix.go_version }}
-      ldflags: ${{ matrix.ldflags }}
-      mimalloc_version: ${{ matrix.mimalloc_version }}
       os: ${{ matrix.os }}
       arch: ${{ matrix.arch }}
       distro: ${{ matrix.distro }}
       platform: ${{ matrix.platform }}
       repo: ${{ matrix.repo }}
-      target: ${{ matrix.target }}
       version: ${{ matrix.version }}

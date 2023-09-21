@@ -5,7 +5,7 @@ WASMVM_VERSION="$1"
 
 if [ -n "${WASMVM_VERSION}" ]; then
     WASMVM_DOWNLOADS="https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}"
-    curl -o /tmp/checksums.txt ${WASMVM_DOWNLOADS}/checksums.txt
+    curl -sSL -o /tmp/checksums.txt ${WASMVM_DOWNLOADS}/checksums.txt
     ARCH=$(uname -m) 
     if [ ${ARCH} = "amd64" ] || [ ${ARCH} = "x86_64" ]; then 
         WASMVM_URL="${WASMVM_DOWNLOADS}/libwasmvm_muslc.x86_64.a" 
@@ -16,7 +16,7 @@ if [ -n "${WASMVM_VERSION}" ]; then
         exit 1
     fi
 
-    curl -o /lib/libwasmvm_muslc.a ${WASMVM_URL}
+    curl -sSL -o /lib/libwasmvm_muslc.a ${WASMVM_URL}
     CHECKSUM=$(sha256sum /lib/libwasmvm_muslc.a | cut -d" " -f1)
     grep ${CHECKSUM} /tmp/checksums.txt
     rm /tmp/checksums.txt 

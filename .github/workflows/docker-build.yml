@@ -9,44 +9,57 @@ on:
           type: string
         build_command:
           description: "Build command"
-          required: true
           type: string
+          required: false
+          default: "make install"
         build_tags:
           description: "Build tags"
-          required: true
           type: string
+          required: false
+          default: "netgo ledger muslc"
         chain_registry_name:
           description: "Name of the application"
           required: true
           type: string
         cosmos_build_options:
           description: "Cosmos build options"
-          required: true
           type: string
+          required: false
+          default: ""
+        denom:
+          description: "Denom"
+          type: string
+          required: false
+          default: ""
         go_version:
           description: "Go version"
-          required: true
           type: string
+          required: false
+          default: "1.20.8"
         ldflags:
           description: "Ldflags"
-          required: true
           type: string
+          required: false
+          default: "-w -s -linkmode=external -extldflags \"-Wl,-z,muldefs -static\""
         mimalloc_version:
           description: "Mimalloc version"
-          required: true
+          required: false
           type: string
+          default: ""
         name:
           description: "Name of the application"
           required: true
           type: string
         os:
           description: "Os type linux,darwin etc"
-          required: true
+          required: false
           type: string
+          default: "linux"
         arch:
           description: "Architecture"
-          required: true
+          required: false
           type: string
+          default: "amd64"
         distro:
           description: "Linux distribution"
           required: true
@@ -61,8 +74,9 @@ on:
           type: string
         target:
           description: "Target"
-          required: true
+          required: false
           type: string
+          default: "prod"
         version:
           description: "Version"
           required: true
@@ -112,7 +126,7 @@ jobs:
           tags: |
             type=sha
             type=raw,value=${{ inputs.version }},enable={{ is_default_branch }}
-            type=raw,value=${{ inputs.version }}-${{ inputs.distro }}${{ inputs.distro_version }},enable={{ is_default_branch }}
+            type=raw,value=${{ inputs.version }}-${{ inputs.distro }},enable={{ is_default_branch }}
 
       - name: Build docker image
         uses: docker/build-push-action@v4
@@ -129,10 +143,10 @@ jobs:
             APP_NAME=${{ inputs.name }}
             BIN_NAME=${{ inputs.binary }}
             BUILD_COMMAND=${{ inputs.build_command }}
-            BUILDPLATFORM=${{ inputs.platform }}
             BUILD_TAGS=${{ inputs.build_tags }}
             CHAIN_REGISTRY_NAME=${{ inputs.chain_registry_name }}
             COSMOS_BUILD_OPTIONS=${{ inputs.cosmos_build_options }}
+            DENOM=${{ inputs.denom }}
             GIT_TAG=v${{ inputs.version }}
             GIT_REPO=${{ inputs.repo }}
             GO_VERSION=${{ inputs.go_version }}

@@ -49,10 +49,10 @@ ENV GIT_TAG=${GIT_TAG} \
 
 RUN set -eu && \
     git clone -b ${GIT_TAG} https://github.com/${GIT_REPO}.git ./ && \
-    go mod download -x > /dev/null
+    go mod download
 
 # download wasmvm if version is specified
-RUN set -u && \
+RUN set -ux && \
     WASMVM_VERSION="$(go list -m github.com/CosmWasm/wasmvm | cut -d ' ' -f 2)" && \
     [ -n "${WASMVM_VERSION}" ] && install-wasmvm "${WASMVM_VERSION}" || true
 

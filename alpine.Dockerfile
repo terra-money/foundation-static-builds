@@ -1,8 +1,7 @@
 ARG GO_VERSION="1.20.8"
-ARG BUILDPLATFORM=linux/amd64
 
 ################################################################################
-FROM --platform=${BUILDPLATFORM} golang:${GO_VERSION}-alpine as base
+FROM golang:${GO_VERSION}-alpine as base
 
 # NOTE: add libusb-dev to run with LEDGER_ENABLED=true
 RUN set -eu &&\
@@ -11,8 +10,6 @@ RUN set -eu &&\
     ca-certificates \
     linux-headers \
     build-base \
-    gcompat \
-    cmake \
     bash \
     curl \
     git
@@ -25,12 +22,13 @@ FROM base as builder
 ARG APP_NAME="terra"
 ARG BIN_NAME="${APP_NAME}d"
 ARG BUILD_COMMAND="make install"
-ARG BUILD_TAGS="muslc"
+ARG BUILD_TAGS="netgo,ledger,muslc"
 ARG COSMOS_BUILD_OPTIONS="nostrip"
+ARG DENOM
 ARG GIT_TAG="v2.4.1"
 ARG GIT_REPO="terra-money/core"
 #ARG LDFLAGS="-extldflags '-L/go/src/mimalloc/build -lmimalloc -Wl,-z,muldefs -static'"
-ARG LDFLAGS='-linkmode external -extldflags "-Wl,-z,muldefs -static"'
+ARG LDFLAGS='-w -s -linkmode external -extldflags "-Wl,-z,muldefs -static"'
 ARG MIMALLOC_VERSION
 
 ENV MIMALLOC_VERSION=${MIMALLOC_VERSION}
@@ -46,10 +44,10 @@ ENV GIT_TAG=${GIT_TAG} \
 
 RUN set -eu && \
     git clone -b ${GIT_TAG} https://github.com/${GIT_REPO}.git ./ && \
-    go mod download -x > /dev/null
+    go mod download -x
 
 # download wasmvm if version is specified
-RUN set -u && \
+RUN set -ux && \
     WASMVM_VERSION="$(go list -m github.com/CosmWasm/wasmvm | cut -d ' ' -f 2)" && \
     [ -n "${WASMVM_VERSION}" ] && install-wasmvm "${WASMVM_VERSION}" || true
 
@@ -61,10 +59,13 @@ ENV APP_NAME=${APP_NAME} \
     LEDGER_ENABLED=false \
     LINK_STATICALLY=true
 
-RUN set -eux && \
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/root/go/pkg/mod \
+    set -eux && \
     export COMMIT=GIT_COMMIT="$(git log -1 --format='%h')" && \
     export VERSION=GIT_VERSION="$(git describe --tags --dirty --always)" && \
     export DENOM=${DENOM:-"u$(echo ${APP_NAME} | head -c 4)"} && \
+    export GOWORK=off && \
     ${BUILD_COMMAND}
 
 # verify static binary

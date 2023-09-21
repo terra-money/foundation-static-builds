@@ -1,4 +1,4 @@
-name: terra-build
+name: kujira-build
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
       - 'arch.Dockerfile'
       - 'alpine.Dockerfile'
       - '.github/workflows/docker-build.yml'
-      - '.github/workflows/terra-build.yml'
+      - '.github/workflows/kujira-build.yml'
 
   push:
     branches:
@@ -19,7 +19,7 @@ on:
       - 'arch.Dockerfile'
       - 'alpine.Dockerfile'
       - '.github/workflows/docker-build.yml'
-      - '.github/workflows/terra-build.yml'
+      - '.github/workflows/kujira-build.yml'
 
 jobs:
   terra-build:
@@ -30,53 +30,30 @@ jobs:
       matrix:
         #platform: ["linux/amd64", "linux/arm64"] # need arm runners
         platform: ["linux/amd64"]
-        distro: ["alpine", "arch"]
+        distro: ["alpine"]
         version:
-          - "2.0.0-rc.1"
-          - "2.0.1"
-          - "2.1.0.beta.1"
-          - "2.1.4"
-          - "2.2.1"
-          - "2.3.4"
-          - "2.3.5"
-          - "2.4.0-rc.5"
-          - "2.4.0"
-          - "2.4.1"
-          - "2.5.0-rc.5"
+          - 0.4.1
+          - 0.5.0
+          - 0.6.4
+          - 0.7.1
+          - 0.8.3
+          - 0.8.7 
         
         include:
           # Include Defaults (keep at top)
-          - name: "terra"
-            binary: "terrad"
+          - name: "kujira"
+            binary: "kujirad"
             build_command: "make install"
-            chain_registry_name: "terra2"
+            chain_registry_name: "kujira"
             go_version: "1.20.8"
-            repo: "terra-money/core"
+            repo: "Team-Kujira/core"
             os: "linux"
             arch: "amd64"
-            denom: "uluna"
-
-          # Includes per version
-          - version: "2.0.0-rc.1"
-            go_version: "1.18.10"
-          - version: "2.0.1"
-            go_version: "1.18.10"
-          - version: "2.1.0.beta.1"
-            go_version: "1.18.10"
-          - version: "2.1.4"
-            go_version: "1.18.10"
-          - version: "2.2.1"
-            go_version: "1.19.13"
-          - version: "2.3.4"
-            go_version: "1.19.13"
-          - version: "2.3.5"
-            go_version: "1.19.13"
         
     with:
       binary: ${{ matrix.binary }}
       build_command: ${{ matrix.build_command }}
       chain_registry_name: ${{ matrix.chain_registry_name }}
-      denom: ${{ matrix.denom }}
       go_version: ${{ matrix.go_version }}
       name: ${{ matrix.name }}
       os: ${{ matrix.os }}
