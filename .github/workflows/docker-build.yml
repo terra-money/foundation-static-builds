@@ -72,6 +72,11 @@ on:
           description: "Repo"
           required: true
           type: string
+        repo_tag:
+          description: "Tag"
+          required: False
+          type: string
+          default: ""
         target:
           description: "Target"
           required: false
@@ -81,11 +86,6 @@ on:
           description: "Version"
           required: true
           type: string
-        repo_tag:
-          description: "Tag"
-          required: False
-          type: string
-          default: ""
 
 jobs:
   build:
