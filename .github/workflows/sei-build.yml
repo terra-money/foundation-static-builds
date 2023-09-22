@@ -32,6 +32,7 @@ jobs:
         platform: ["linux/amd64"]
         distro: ["alpine"]
         version:
+          - 1.0.6beta"
           - 3.0.2
           - 3.0.3
           - 3.0.4
@@ -50,6 +51,10 @@ jobs:
             repo: "sei-protocol/sei-chain"
             os: "linux"
             arch: "amd64"
+            tag: ""
+
+          - version: "1.0.6beta"
+            tag: "1.0.6beta"
         
     with:
       binary: ${{ matrix.binary }}
@@ -63,3 +68,4 @@ jobs:
       platform: ${{ matrix.platform }}
       repo: ${{ matrix.repo }}
       version: ${{ matrix.version }}
+      tag: ${{ matrix.tag }}
