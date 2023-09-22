@@ -1,0 +1,66 @@
+name: sei-build
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'bin/builder'
+      - 'arch.Dockerfile'
+      - 'alpine.Dockerfile'
+      - '.github/workflows/docker-build.yml'
+      - '.github/workflows/sei-build.yml'
+
+  push:
+    branches:
+      - main
+    paths:
+      - 'bin/builder'
+      - 'arch.Dockerfile'
+      - 'alpine.Dockerfile'
+      - '.github/workflows/docker-build.yml'
+      - '.github/workflows/sei-build.yml'
+
+jobs:
+  sei-build:
+    uses: ./.github/workflows/docker-build.yml
+    secrets: inherit
+    strategy:
+      fail-fast: false
+      matrix:
+        #platform: ["linux/amd64", "linux/arm64"] # need arm runners
+        platform: ["linux/amd64"]
+        distro: ["alpine"]
+        version:
+          - "1.0.6beta"
+          - v3.0.2
+          - v3.0.3
+          - v3.0.4
+          - v3.0.6
+          - v3.0.7
+          - v3.0.8
+          - v3.0.9
+        
+        include:
+          # Include Defaults (keep at top)
+          - name: "sei"
+            binary: "seid"
+            build_command: "make install"
+            chain_registry_name: "sei"
+            go_version: "1.20.8"
+            repo: "sei-protocol/sei-chain"
+            os: "linux"
+            arch: "amd64"
+        
+    with:
+      binary: ${{ matrix.binary }}
+      build_command: ${{ matrix.build_command }}
+      chain_registry_name: ${{ matrix.chain_registry_name }}
+      go_version: ${{ matrix.go_version }}
+      name: ${{ matrix.name }}
+      os: ${{ matrix.os }}
+      arch: ${{ matrix.arch }}
+      distro: ${{ matrix.distro }}
+      platform: ${{ matrix.platform }}
+      repo: ${{ matrix.repo }}
+      version: ${{ matrix.version }}
