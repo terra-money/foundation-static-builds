@@ -51,10 +51,10 @@ jobs:
             repo: "sei-protocol/sei-chain"
             os: "linux"
             arch: "amd64"
-            tag: ""
+            repo_tag: ""
 
           - version: "1.0.6beta"
-            tag: "1.0.6beta"
+            repo_tag: "1.0.6beta"
         
     with:
       binary: ${{ matrix.binary }}
@@ -68,4 +68,4 @@ jobs:
       platform: ${{ matrix.platform }}
       repo: ${{ matrix.repo }}
       version: ${{ matrix.version }}
-      tag: ${{ matrix.tag }}
+      repo_tag: ${{ matrix.repo_tag }}

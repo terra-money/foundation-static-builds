@@ -81,7 +81,7 @@ on:
           description: "Version"
           required: true
           type: string
-        tag:
+        repo_tag:
           description: "Tag"
           required: False
           type: string
@@ -133,14 +133,14 @@ jobs:
             type=raw,value=${{ inputs.version }},enable={{ is_default_branch }}
             type=raw,value=${{ inputs.version }}-${{ inputs.distro }},enable={{ is_default_branch }}
 
-      - name: Set GIT_TAG
+      - name: Set REPO_TAG
         run: |
-          if [[ -n "${{ inputs.tag }}" ]]; then
-            echo "Setting GIT_TAG to ${{ inputs.tag }}"
-            echo "GIT_TAG=${{ inputs.tag }}" >> $GITHUB_ENV
+          if [[ -n "${{ inputs.repo_tag }}" ]]; then
+            echo "Setting REPO_TAG to ${{ inputs.repo_tag }}"
+            echo "REPO_TAG=${{ inputs.repo_tag }}" >> $GITHUB_ENV
           else
-            echo "Setting GIT_TAG to v${{ inputs.version }}"
-            echo "GIT_TAG=v${{ inputs.version }}" >> $GITHUB_ENV
+            echo "Setting REPO_TAG to v${{ inputs.version }}"
+            echo "REPO_TAG=v${{ inputs.version }}" >> $GITHUB_ENV
           fi
 
       - name: Build docker image
@@ -162,7 +162,7 @@ jobs:
             CHAIN_REGISTRY_NAME=${{ inputs.chain_registry_name }}
             COSMOS_BUILD_OPTIONS=${{ inputs.cosmos_build_options }}
             DENOM=${{ inputs.denom }}
-            GIT_TAG=${{ env.GIT_TAG }}
+            REPO_TAG=${{ env.REPO_TAG }}
             GIT_REPO=${{ inputs.repo }}
             GO_VERSION=${{ inputs.go_version }}
             LDFLAGS=${{ inputs.ldflags }}
