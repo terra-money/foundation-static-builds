@@ -162,7 +162,7 @@ jobs:
             CHAIN_REGISTRY_NAME=${{ inputs.chain_registry_name }}
             COSMOS_BUILD_OPTIONS=${{ inputs.cosmos_build_options }}
             DENOM=${{ inputs.denom }}
-            REPO_TAG=${{ env.REPO_TAG }}
+            GIT_TAG=${{ env.REPO_TAG }}
             GIT_REPO=${{ inputs.repo }}
             GO_VERSION=${{ inputs.go_version }}
             LDFLAGS=${{ inputs.ldflags }}
