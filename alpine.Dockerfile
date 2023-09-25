@@ -18,7 +18,7 @@ RUN set -eu &&\
 COPY ./bin/install-mimalloc ./bin/install-wasmvm /usr/local/bin/
 
 ################################################################################
-FROM terraformlabs/alpine-base:latest as builder
+FROM base as builder
 
 ARG APP_NAME="terra"
 ARG BIN_NAME="${APP_NAME}d"
