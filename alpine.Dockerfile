@@ -18,11 +18,11 @@ RUN set -eu &&\
 SHELL [ "/bin/bash", "-c" ]
 
 # install gvm
-RUN set -ex && \
+RUN set -e && \
     /bin/bash < <(curl -sSL https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) && \
     source ${HOME}/.gvm/scripts/gvm && \
-    for version in 1.18, 1.19, 1.20; do \
-        gvm install go${version}; \
+    for version in 1.18 1.19 1.20; do \
+        gvm install "go${version}"; \
     done
 
 COPY ./bin/install-mimalloc ./bin/install-wasmvm /usr/local/bin/
