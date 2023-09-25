@@ -1,7 +1,7 @@
 ARG GO_VERSION="1.20"
 
 ################################################################################
-FROM golang:${GO_VERSION}-alpine as alpine-base
+FROM golang:${GO_VERSION}-alpine as base
 
 # NOTE: add libusb-dev to run with LEDGER_ENABLED=true
 RUN set -eu &&\
