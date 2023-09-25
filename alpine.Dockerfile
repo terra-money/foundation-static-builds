@@ -1,4 +1,4 @@
-ARG GO_VERSION="1.20.8"
+ARG GO_VERSION="1.20"
 
 ################################################################################
 FROM golang:${GO_VERSION}-alpine as base
@@ -11,8 +11,19 @@ RUN set -eu &&\
     linux-headers \
     build-base \
     bash \
+    bison \
     curl \
-    git
+    git 
+
+SHELL [ "/bin/bash", "-c" ]
+
+# install gvm
+RUN set -ex && \
+    /bin/bash < <(curl -sSL https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) && \
+    source ${HOME}/.gvm/scripts/gvm && \
+    for version in 1.18, 1.19, 1.20; do \
+        gvm install go${version}; \
+    done
 
 COPY ./bin/install-mimalloc ./bin/install-wasmvm /usr/local/bin/
 
@@ -30,6 +41,7 @@ ARG GIT_REPO="terra-money/core"
 #ARG LDFLAGS="-extldflags '-L/go/src/mimalloc/build -lmimalloc -Wl,-z,muldefs -static'"
 ARG LDFLAGS='-w -s -linkmode external -extldflags "-Wl,-z,muldefs -static"'
 ARG MIMALLOC_VERSION
+ARG GO_VERSION
 
 ENV MIMALLOC_VERSION=${MIMALLOC_VERSION}
 # install mimalloc if version is specified
@@ -42,8 +54,14 @@ WORKDIR ${GOPATH}/src/app
 ENV GIT_TAG=${GIT_TAG} \
     GIT_REPO=${GIT_REPO}
 
-RUN set -eu && \
+RUN set -ex && \
     git clone -b ${GIT_TAG} https://github.com/${GIT_REPO}.git ./ && \
+    export GO_MOD_VERSION="$(awk '/^go /{print $2}' go.mod)" && \
+    if [[ "${GO_VERSION}" != "${GO_MOD_VERSION}"* ]]; then \
+        source ${HOME}/.gvm/scripts/gvm && \
+        gvm install go${GO_MOD_VERSION} && \
+        gvm use go${GO_MOD_VERSION}; \
+    fi && \ 
     go mod download -x
 
 # download wasmvm if version is specified
@@ -75,7 +93,7 @@ RUN set -x && \
     (file ${GOPATH}/bin/${BIN_NAME} | grep "statically linked")
 
 ################################################################################
-FROM --platform=${BUILDPLATFORM} alpine:3.18 as prod
+FROM --platform=${BUILDPLATFORM} alpine:latest as prod
 
 # build args passed down to env var
 

@@ -43,7 +43,7 @@ jobs:
           - binary: "gaiad"
             build_command: "make install"
             chain_registry_name: "cosmos"
-            go_version: "1.20.8"
+            go_version: "1.20"
             name: "gaia"
             repo: "cosmos/gaia"
             os: linux

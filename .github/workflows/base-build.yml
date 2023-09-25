@@ -28,7 +28,7 @@ jobs:
         platform: ["linux/amd64", "linux/arm64"]
         name: ["base"]
         distro: ["alpine", "arch"]
-        go_version: ["1.20.8"]
+        go_version: ["1.20"]
 
     steps:
       - name: Checkout

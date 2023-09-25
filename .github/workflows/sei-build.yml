@@ -48,7 +48,7 @@ jobs:
             binary: "seid"
             build_command: "make install"
             chain_registry_name: "sei"
-            go_version: "1.20.8"
+            go_version: "1.20"
             repo: "sei-protocol/sei-chain"
             os: "linux"
             arch: "amd64"

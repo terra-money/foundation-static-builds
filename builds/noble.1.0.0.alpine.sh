@@ -3,10 +3,10 @@
 BASEDIR=$(dirname "$0")
 DOCKER_DIR="${BASEDIR}/.."
 IMAGE="alpine"
-NAME="mars"
-REPO="mars-protocol/hub"
-TAG="1.0.2"
-GO_VERSION="1.20.8"
+NAME="noble"
+REPO="strangelove-ventures/noble"
+TAG="1.0.0"
+GO_VERSION="1.19"
 
 cd "${DOCKER_DIR}"
 docker buildx build "." -f "${IMAGE}.Dockerfile" \

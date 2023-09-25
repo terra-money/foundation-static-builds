@@ -9,7 +9,7 @@ FROM --platform=${BUILDPLATFORM} ${BASE_IMAGE} as base
 
 ARG OS
 ARG ARCH
-ARG GO_VERSION="1.20.8"
+ARG GO_VERSION="1.20"
 
 # # NOTE: add libusb-dev to run with LEDGER_ENABLED=true
 RUN set -eu & \

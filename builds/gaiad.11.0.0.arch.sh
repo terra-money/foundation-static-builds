@@ -2,11 +2,11 @@
 
 BASEDIR=$(dirname "$0")
 DOCKER_DIR="${BASEDIR}/.."
-IMAGE="alpine"
+IMAGE="arch"
 NAME="gaia"
 REPO="cosmos/gaia"
 TAG="11.0.0"
-GO_VERSION="1.20.8"
+GO_VERSION="1.20"
 
 cd "${DOCKER_DIR}"
 docker buildx build "." -f "${IMAGE}.Dockerfile" \

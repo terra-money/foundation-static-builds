@@ -50,7 +50,7 @@ jobs:
             binary: "terrad"
             build_command: "make install"
             chain_registry_name: "terra2"
-            go_version: "1.20.8"
+            go_version: "1.20"
             repo: "terra-money/core"
             os: "linux"
             arch: "amd64"
@@ -58,19 +58,19 @@ jobs:
 
           # Includes per version
           - version: "2.0.0-rc.1"
-            go_version: "1.18.10"
+            go_version: "1.18"
           - version: "2.0.1"
-            go_version: "1.18.10"
+            go_version: "1.18"
           - version: "2.1.0-beta.1"
-            go_version: "1.18.10"
+            go_version: "1.18"
           - version: "2.1.4"
-            go_version: "1.18.10"
+            go_version: "1.18"
           - version: "2.2.1"
-            go_version: "1.19.13"
+            go_version: "1.19"
           - version: "2.3.4"
-            go_version: "1.19.13"
+            go_version: "1.19"
           - version: "2.3.5"
-            go_version: "1.19.13"
+            go_version: "1.19"
         
     with:
       binary: ${{ matrix.binary }}

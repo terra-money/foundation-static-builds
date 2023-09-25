@@ -6,7 +6,7 @@ IMAGE="arch"
 NAME="terra"
 REPO="terra-money/core"
 TAG="2.5.0-rc5"
-GO_VERSION="1.20.8"
+GO_VERSION="1.20"
 
 cd "${DOCKER_DIR}"
 docker buildx build "." -f "${IMAGE}.Dockerfile" \

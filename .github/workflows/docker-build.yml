@@ -35,7 +35,7 @@ on:
           description: "Go version"
           type: string
           required: false
-          default: "1.20.8"
+          default: "1.20"
         ldflags:
           description: "Ldflags"
           type: string
