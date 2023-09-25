@@ -1,7 +1,7 @@
 ARG GO_VERSION="1.20"
 
 ################################################################################
-FROM golang:${GO_VERSION}-alpine as base
+FROM golang:${GO_VERSION}-alpine as alpine-base
 
 # NOTE: add libusb-dev to run with LEDGER_ENABLED=true
 RUN set -eu &&\
@@ -28,7 +28,7 @@ RUN set -e && \
 COPY ./bin/install-mimalloc ./bin/install-wasmvm /usr/local/bin/
 
 ################################################################################
-FROM base as builder
+FROM terraformlabs/alpine-base:latest as builder
 
 ARG APP_NAME="terra"
 ARG BIN_NAME="${APP_NAME}d"
