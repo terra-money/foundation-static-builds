@@ -9,7 +9,7 @@ FROM --platform=${BUILDPLATFORM} ${BASE_IMAGE} as base
 
 ARG OS
 ARG ARCH
-ARG GO_VERSION="1.20"
+ARG GO_VERSION="1.20.8"
 
 # # NOTE: add libusb-dev to run with LEDGER_ENABLED=true
 RUN set -eu & \
@@ -47,9 +47,18 @@ WORKDIR ${GOPATH}/src/app
 ENV GIT_TAG=${GIT_TAG} \
     GIT_REPO=${GIT_REPO}
 
-RUN set -eu && \
+SHELL [ "/bin/bash", "-c" ]
+
+RUN set -e && \
     git clone -b ${GIT_TAG} https://github.com/${GIT_REPO}.git ./ && \
-    go mod download
+    export GO_MOD_VERSION="$(awk '/^go /{print $2}' go.mod)" && \
+    if [[ "${GO_VERSION}" != "${GO_MOD_VERSION}"* ]]; then \
+        /bin/bash < <(curl -sSL https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) && \
+        source ${HOME}/.gvm/scripts/gvm && \
+        gvm install go${GO_MOD_VERSION} && \
+        gvm use go${GO_MOD_VERSION}; \
+    fi && \ 
+    go mod download -x
 
 # download wasmvm if version is specified
 RUN set -ux && \
