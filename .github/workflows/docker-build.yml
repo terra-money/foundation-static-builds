@@ -1,91 +1,91 @@
 name: docker-build
 
 on:
-    workflow_call:
-      inputs: 
-        binary:
-          description: "Name of the binary"
-          required: true
-          type: string
-        build_command:
-          description: "Build command"
-          type: string
-          required: false
-          default: "make install"
-        build_tags:
-          description: "Build tags"
-          type: string
-          required: false
-          default: "netgo ledger muslc"
-        chain_registry_name:
-          description: "Name of the application"
-          required: true
-          type: string
-        cosmos_build_options:
-          description: "Cosmos build options"
-          type: string
-          required: false
-          default: ""
-        denom:
-          description: "Denom"
-          type: string
-          required: false
-          default: ""
-        go_version:
-          description: "Go version"
-          type: string
-          required: false
-          default: "1.20"
-        ldflags:
-          description: "Ldflags"
-          type: string
-          required: false
-          default: "-w -s -linkmode=external -extldflags \"-Wl,-z,muldefs -static\""
-        mimalloc_version:
-          description: "Mimalloc version"
-          required: false
-          type: string
-          default: ""
-        name:
-          description: "Name of the application"
-          required: true
-          type: string
-        os:
-          description: "Os type linux,darwin etc"
-          required: false
-          type: string
-          default: "linux"
-        arch:
-          description: "Architecture"
-          required: false
-          type: string
-          default: "amd64"
-        distro:
-          description: "Linux distribution"
-          required: true
-          type: string
-        platform:
-          description: "Platform"
-          required: true
-          type: string
-        repo:
-          description: "Repo"
-          required: true
-          type: string
-        repo_tag:
-          description: "Tag"
-          required: False
-          type: string
-          default: ""
-        target:
-          description: "Target"
-          required: false
-          type: string
-          default: "prod"
-        version:
-          description: "Version"
-          required: true
-          type: string
+  workflow_call:
+    inputs: 
+      binary:
+        description: "Name of the binary"
+        required: true
+        type: string
+      build_command:
+        description: "Build command"
+        type: string
+        required: false
+        default: "make install"
+      build_tags:
+        description: "Build tags"
+        type: string
+        required: false
+        default: "netgo ledger muslc"
+      chain_registry_name:
+        description: "Name of the application"
+        required: true
+        type: string
+      cosmos_build_options:
+        description: "Cosmos build options"
+        type: string
+        required: false
+        default: ""
+      denom:
+        description: "Denom"
+        type: string
+        required: false
+        default: ""
+      go_version:
+        description: "Go version"
+        type: string
+        required: false
+        default: "1.20"
+      ldflags:
+        description: "Ldflags"
+        type: string
+        required: false
+        default: "-w -s -linkmode=external -extldflags \"-Wl,-z,muldefs -static\""
+      mimalloc_version:
+        description: "Mimalloc version"
+        required: false
+        type: string
+        default: ""
+      name:
+        description: "Name of the application"
+        required: true
+        type: string
+      os:
+        description: "Os type linux,darwin etc"
+        required: false
+        type: string
+        default: "linux"
+      arch:
+        description: "Architecture"
+        required: false
+        type: string
+        default: "amd64"
+      distro:
+        description: "Linux distribution"
+        required: true
+        type: string
+      platform:
+        description: "Platform"
+        required: true
+        type: string
+      repo:
+        description: "Repo"
+        required: true
+        type: string
+      repo_tag:
+        description: "Tag"
+        required: False
+        type: string
+        default: ""
+      target:
+        description: "Target"
+        required: false
+        type: string
+        default: "prod"
+      version:
+        description: "Version"
+        required: true
+        type: string
 
 jobs:
   build:

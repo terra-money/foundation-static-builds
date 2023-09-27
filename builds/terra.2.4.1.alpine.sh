@@ -5,7 +5,7 @@ DOCKER_DIR="${BASEDIR}/.."
 IMAGE="alpine"
 NAME="terra"
 REPO="terra-money/core"
-TAG="2.5.0-rc5"
+TAG="2.4.1"
 GO_VERSION="1.20"
 
 cd "${DOCKER_DIR}"

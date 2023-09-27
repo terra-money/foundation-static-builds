@@ -19,7 +19,7 @@ if [ -f ${HOME}/.env ]; then
 fi
 
 # Cosmos SDK v0.47 settings
-if ${BIN_NAME} version --long | grep 'cosmos_sdk_version: v0.47]'; then
+if ${BIN_NAME} version --long | grep 'cosmos_sdk_version: v0.47'; then
     GENESIS="genesis"
     ADD_INIT_FLAGS="--default-denom=${DENOM}"
 else
