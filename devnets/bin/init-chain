@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -Eeuo pipefail
+set -Eeuox pipefail
 
 # This script is used to initialize the chain
 
@@ -38,9 +38,11 @@ select_num(){
         sleep_random
     elif [ ${VALIDATOR_ID} -ge ${NUM_VALIDATORS} ]; then
         VALIDATOR_ID=0
+        rm -rf ${HOME}/.shared/claims
     fi
     if [ -f ${HOME}/.shared/claims/validator-${VALIDATOR_ID} ]; then
-        select_num $((VALIDATOR_ID++))
+        VALIDATOR_ID=$((VALIDATOR_ID + 1 ))
+        select_num
     fi
     touch ${HOME}/.shared/claims/validator-${VALIDATOR_ID}
     echo "VALIDATOR_ID=${VALIDATOR_ID}" > ${HOME}/.env
