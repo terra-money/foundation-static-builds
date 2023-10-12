@@ -25,13 +25,8 @@ FROM base as builder
 
 ARG APP_NAME="terra"
 ARG BIN_NAME="${APP_NAME}d"
-ARG BUILD_COMMAND="make install"
-ARG BUILD_TAGS="muslc"
-ARG COSMOS_BUILD_OPTIONS="nostrip"
 ARG GIT_TAG="v2.4.1"
 ARG GIT_REPO="terra-money/core"
-# ARG LDFLAGS="-extldflags '-L/go/src/mimalloc/build -lmimalloc -Wl,-z,muldefs -static'"
-ARG LDFLAGS='-extldflags "-Wl,-z,muldefs -static"'
 ARG MIMALLOC_VERSION
 # ARG MIMALLOC_VERSION="v2.1.2"
 
@@ -65,6 +60,12 @@ RUN set -ux && \
     WASMVM_VERSION="$(go list -m github.com/CosmWasm/wasmvm | cut -d ' ' -f 2)" && \
     [ -n "${WASMVM_VERSION}" ] && install-wasmvm "${WASMVM_VERSION}" || true
 
+ARG BUILD_COMMAND="make install"
+ARG BUILD_TAGS="muslc"
+ARG COSMOS_BUILD_OPTIONS="nostrip"
+ARG LDFLAGS='-extldflags "-Wl,-z,muldefs -static"'
+# ARG LDFLAGS="-extldflags '-L/go/src/mimalloc/build -lmimalloc -Wl,-z,muldefs -static'"
+
 # build the binary
 ENV APP_NAME=${APP_NAME} \
     BUILD_TAGS=${BUILD_TAGS} \
@@ -77,7 +78,7 @@ RUN set -eux && \
     export COMMIT=GIT_COMMIT="$(git log -1 --format='%h')" && \
     export VERSION=GIT_VERSION="$(git describe --tags --dirty --always)" && \
     export DENOM=${DENOM:-"u$(echo ${APP_NAME} | head -c 4)"} && \
-    ${BUILD_COMMAND}
+    eval ${BUILD_COMMAND}
 
 # verify static binary
 RUN set -x && \
