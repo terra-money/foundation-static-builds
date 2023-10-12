@@ -13,6 +13,7 @@ RUN set -eu &&\
     bash \
     bison \
     curl \
+    gcompat \
     git 
 
 COPY ./bin/install-mimalloc ./bin/install-wasmvm /usr/local/bin/
@@ -22,14 +23,10 @@ FROM base as builder
 
 ARG APP_NAME="terra"
 ARG BIN_NAME="${APP_NAME}d"
-ARG BUILD_COMMAND="make install"
-ARG BUILD_TAGS="netgo,ledger,muslc"
 ARG COSMOS_BUILD_OPTIONS="nostrip"
 ARG DENOM
 ARG GIT_TAG="v2.4.1"
 ARG GIT_REPO="terra-money/core"
-#ARG LDFLAGS="-extldflags '-L/go/src/mimalloc/build -lmimalloc -Wl,-z,muldefs -static'"
-ARG LDFLAGS='-w -s -linkmode external -extldflags "-Wl,-z,muldefs -static"'
 ARG MIMALLOC_VERSION
 ARG GO_VERSION
 
@@ -63,7 +60,13 @@ RUN set -ux && \
     [ -n "${WASMVM_VERSION}" ] && install-wasmvm "${WASMVM_VERSION}" || true
 
 # build the binary
+ARG BUILD_COMMAND="make install"
+ARG BUILD_TAGS="netgo,ledger,muslc"
+ARG LDFLAGS='-w -s -linkmode external -extldflags "-Wl,-z,muldefs -static"'
+#ARG LDFLAGS="-extldflags '-L/go/src/mimalloc/build -lmimalloc -Wl,-z,muldefs -static'"
+
 ENV APP_NAME=${APP_NAME} \
+    BUILD_COMMAND=${BUILD_COMMAND} \
     BUILD_TAGS=${BUILD_TAGS} \
     DENOM=${DENOM} \
     LDFLAGS=${LDFLAGS} \
@@ -73,11 +76,12 @@ ENV APP_NAME=${APP_NAME} \
 RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/root/go/pkg/mod \
     set -eux && \
+    export CGO_ENABLED=0 && \
     export COMMIT=GIT_COMMIT="$(git log -1 --format='%h')" && \
     export VERSION=GIT_VERSION="$(git describe --tags --dirty --always)" && \
     export DENOM=${DENOM:-"u$(echo ${APP_NAME} | head -c 4)"} && \
     export GOWORK=off && \
-    ${BUILD_COMMAND}
+    eval ${BUILD_COMMAND}
 
 # verify static binary
 RUN set -x && \
