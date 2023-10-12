@@ -1,0 +1,64 @@
+name: decentr-build
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'bin/builder'
+      - 'arch.Dockerfile'
+      - 'alpine.Dockerfile'
+      - '.github/workflows/docker-build.yml'
+      - '.github/workflows/decentr-build.yml'
+
+  push:
+    branches:
+      - main
+    paths:
+      - 'bin/builder'
+      - 'arch.Dockerfile'
+      - 'alpine.Dockerfile'
+      - '.github/workflows/docker-build.yml'
+      - '.github/workflows/decentr-build.yml'
+
+jobs:
+  decentr-build:
+    uses: ./.github/workflows/docker-build.yml
+    secrets: inherit
+    strategy:
+      fail-fast: false
+      matrix:
+        #platform: ["linux/amd64", "linux/arm64"] # need arm runners
+        platform: ["linux/amd64"]
+        distro: ["alpine"]
+        version:
+          - "1.5.7"
+          - "1.5.8"
+          - "1.5.9"
+          - "1.6.0"
+          - "1.6.1"
+          - "1.6.2"
+        
+        include:
+          # Include Defaults (keep at top)
+          - name: "decentr"
+            binary: "decentrd"
+            build_command: "make install"
+            chain_registry_name: "decentr"
+            go_version: "1.19"
+            repo: "Decentr-net/decentr"
+            os: "linux"
+            arch: "amd64"
+        
+    with:
+      binary: ${{ matrix.binary }}
+      build_command: ${{ matrix.build_command }}
+      chain_registry_name: ${{ matrix.chain_registry_name }}
+      go_version: ${{ matrix.go_version }}
+      name: ${{ matrix.name }}
+      os: ${{ matrix.os }}
+      arch: ${{ matrix.arch }}
+      distro: ${{ matrix.distro }}
+      platform: ${{ matrix.platform }}
+      repo: ${{ matrix.repo }}
+      version: ${{ matrix.version }}
