@@ -42,7 +42,7 @@ jobs:
         include:
           # Include Defaults (keep at top)
           - name: "kava"
-            binary: "kavad"
+            binary: "kava"
             build_command: "make install"
             chain_registry_name: "kava"
             repo: "Kava-Labs/kava"

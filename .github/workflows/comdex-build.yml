@@ -45,7 +45,7 @@ jobs:
         include:
           # Include Defaults (keep at top)
           - name: "comdex"
-            binary: "comdexd"
+            binary: "comdex"
             build_command: "make install"
             chain_registry_name: "comdex"
             go_version: "1.19"
