@@ -79,14 +79,14 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     export COMMIT=GIT_COMMIT="$(git log -1 --format='%h')" && \
     export VERSION=GIT_VERSION="$(git describe --tags --dirty --always)" && \
     export DENOM=${DENOM:-"u$(echo ${APP_NAME} | head -c 4)"} && \
-    export GOWORK=off
-#     eval ${BUILD_COMMAND}
+    export GOWORK=off && \
+    eval ${BUILD_COMMAND}
 
-# # verify static binary
-# RUN set -x && \
-#     file ${GOPATH}/bin/${BIN_NAME} && \
-#     echo "Ensuring binary is statically linked ..." && \
-#     (file ${GOPATH}/bin/${BIN_NAME} | grep "statically linked")
+# verify static binary
+RUN set -x && \
+    file ${GOPATH}/bin/${BIN_NAME} && \
+    echo "Ensuring binary is statically linked ..." && \
+    (file ${GOPATH}/bin/${BIN_NAME} | grep "statically linked")
 
 ################################################################################
 FROM --platform=${BUILDPLATFORM} alpine:latest as prod

@@ -50,9 +50,9 @@ jobs:
             os: "linux"
             arch: "amd64"
 
-          - version: "0.15.2"
+          - version: "0.15.0"
             go_version: "1.13"
-            binary: "kavad"
+            binary: "kvd"
 
           - version: "0.17.1"
             go_version: "1.17"
