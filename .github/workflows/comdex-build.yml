@@ -46,7 +46,7 @@ jobs:
           # Include Defaults (keep at top)
           - name: "comdex"
             binary: "comdex"
-            build_command: "CGO_ENABLED=0 make install"
+            build_command: "make install"
             chain_registry_name: "comdex"
             go_version: "1.19"
             repo: "comdex-official/comdex"
@@ -55,9 +55,11 @@ jobs:
         
           - version: "0.0.4"
             go_version: "1.16"
+            build_command: "CGO_ENABLED=0 make install"
 
           - version: "0.1.1"
             go_version: "1.16"
+            build_command: "CGO_ENABLED=0 make install"
 
           - version: "5.0.0"
             go_version: "1.18"
