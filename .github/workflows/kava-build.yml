@@ -52,7 +52,7 @@ jobs:
 
           - version: "0.15.0"
             go_version: "1.13"
-            binary: "kvd"
+            build_command: "make install && mv /go/bin/kvd /go/bin/kava"
 
           - version: "0.17.1"
             go_version: "1.17"
