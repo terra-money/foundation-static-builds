@@ -44,12 +44,16 @@ jobs:
             binary: "decentrd"
             build_command: "CGO_ENABLED=0 make install"
             build_tags: "netgo"
+            go_version: "1.19"
             chain_registry_name: "decentr"
             repo: "Decentr-net/decentr"
             os: "linux"
             arch: "amd64"
           
           - version: 1.5.7
+            go_version: "1.16"
+
+          - version: 1.5.8
             go_version: "1.16"
 
 
