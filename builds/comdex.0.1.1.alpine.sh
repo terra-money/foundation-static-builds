@@ -5,7 +5,7 @@ DOCKER_DIR="${BASEDIR}/.."
 IMAGE="alpine"
 NAME="comdex"
 REPO="comdex-official/comdex"
-TAG="0.0.4"
+TAG="0.1.1"
 GO_VERSION="1.16"
 
 cd "${DOCKER_DIR}"
@@ -18,7 +18,7 @@ docker buildx build "." -f "${IMAGE}.Dockerfile" \
     --build-arg "ARCH=amd64" \
     --build-arg "APP_NAME=${NAME}" \
     --build-arg "BIN_NAME=${NAME}" \
-    --build-arg "BUILD_COMMAND=CGO_ENABLED=0 make install" \
+    --build-arg "BUILD_COMMAND=make install" \
     --build-arg "BUILD_TAGS=netgo ledger muslc" \
     --build-arg "COSMOS_BUILD_OPTIONS=" \
     --build-arg "GIT_TAG=v${TAG}" \

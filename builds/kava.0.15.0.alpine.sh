@@ -5,13 +5,14 @@ DOCKER_DIR="${BASEDIR}/.."
 IMAGE="alpine"
 NAME="kava"
 REPO="Kava-Labs/kava"
-TAG="0.19.0"
-GO_VERSION="1.18"
+TAG="0.15.2"
+GO_VERSION="1.13"
 
 cd "${DOCKER_DIR}"
 docker buildx build "." -f "${IMAGE}.Dockerfile" \
     --load \
     --progress plain \
+    --target "builder" \
     --tag "terraformlabs/${NAME}:${TAG}" \
     --platform "linux/amd64" \
     --build-arg "OS=linux" \
