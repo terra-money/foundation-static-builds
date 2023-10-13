@@ -46,6 +46,7 @@ jobs:
             build_command: "make install"
             chain_registry_name: "kava"
             repo: "Kava-Labs/kava"
+            go_version: "1.20"
             os: "linux"
             arch: "amd64"
 
