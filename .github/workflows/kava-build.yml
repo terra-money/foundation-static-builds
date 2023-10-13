@@ -52,6 +52,7 @@ jobs:
 
           - version: "0.15.0"
             go_version: "1.16" # should be 1.13, but 1.16 is the lowest supported by gox
+            binary: "kavad"
 
           - version: "0.17.1"
             go_version: "1.17"
