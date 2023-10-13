@@ -58,7 +58,7 @@ jobs:
             build_command: "CGO_ENABLED=0 make install"
 
           - version: "0.1.1"
-            go_version: "1.16"
+            go_version: "1.17"
             build_command: "CGO_ENABLED=0 make install"
 
           - version: "5.0.0"
