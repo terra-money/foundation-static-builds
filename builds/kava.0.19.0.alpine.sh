@@ -17,7 +17,7 @@ docker buildx build "." -f "${IMAGE}.Dockerfile" \
     --build-arg "OS=linux" \
     --build-arg "ARCH=amd64" \
     --build-arg "APP_NAME=${NAME}" \
-    --build-arg "BIN_NAME=${NAME}d" \
+    --build-arg "BIN_NAME=${NAME}" \
     --build-arg "BUILD_COMMAND=make install" \
     --build-arg "BUILD_TAGS=netgo ledger muslc" \
     --build-arg "COSMOS_BUILD_OPTIONS=" \

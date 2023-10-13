@@ -1,4 +1,4 @@
-name: kava-build
+name: comdex-build
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
       - 'arch.Dockerfile'
       - 'alpine.Dockerfile'
       - '.github/workflows/docker-build.yml'
-      - '.github/workflows/kava-build.yml'
+      - '.github/workflows/comdex-build.yml'
 
   push:
     branches:
@@ -19,10 +19,10 @@ on:
       - 'arch.Dockerfile'
       - 'alpine.Dockerfile'
       - '.github/workflows/docker-build.yml'
-      - '.github/workflows/kava-build.yml'
+      - '.github/workflows/comdex-build.yml'
 
 jobs:
-  kava-build:
+  comdex-build:
     uses: ./.github/workflows/docker-build.yml
     secrets: inherit
     strategy:
@@ -32,26 +32,26 @@ jobs:
         platform: ["linux/amd64"]
         distro: ["alpine"]
         version:
-          - "0.15.0"
-          - "0.17.1"
-          - "0.19.0"
-          - "0.21.0"
-          - "0.23.0"
-          - "0.24.0"
+          - "0.0.4"
+          - "0.1.1"
+          - "5.0.0"
+          - "6.0.2"
+          - "7.0.0"
+          - "8.1.0"
+          - "9.0.0"
+          - "10.0.0"
+          - "11.5.0"
         
         include:
           # Include Defaults (keep at top)
-          - name: "kava"
-            binary: "kavad"
+          - name: "comdex"
+            binary: "comdexd"
             build_command: "make install"
-            chain_registry_name: "kava"
-            repo: "Kava-Labs/kava"
+            chain_registry_name: "comdex"
+            go_version: "1.20"
+            repo: "comdex-official/comdex"
             os: "linux"
             arch: "amd64"
-
-          - version: "0.19.0"
-            go_version: "1.18"
-
         
     with:
       binary: ${{ matrix.binary }}
