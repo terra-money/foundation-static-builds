@@ -52,7 +52,7 @@ RUN set -e && \
         gvm install go${GO_MOD_VERSION} && \
         gvm use go${GO_MOD_VERSION}; \
     fi && \ 
-    go mod download -x
+    go mod download -x || true
 
 # download wasmvm if version is specified
 RUN set -ux && \
