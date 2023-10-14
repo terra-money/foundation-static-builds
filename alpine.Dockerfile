@@ -14,6 +14,7 @@ RUN set -eu &&\
     bison \
     curl \
     gcompat \
+    glibc \
     git 
 
 COPY ./bin/install-mimalloc ./bin/install-wasmvm /usr/local/bin/

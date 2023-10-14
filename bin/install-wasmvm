@@ -1,5 +1,5 @@
 #!/bin/sh
-set -eu
+set -eux
 
 WASMVM_VERSION="$1"
 

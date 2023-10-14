@@ -25,5 +25,5 @@ docker buildx build "." -f "${IMAGE}.Dockerfile" \
     --build-arg "GIT_REPO=${REPO}" \
     --build-arg "GO_VERSION=${GO_VERSION}" \
     --build-arg "MIMALLOC_VERSION=" \
-    --build-arg "LDFLAGS=-w -s -linkmode=external -extldflags \"-Wl,-z,muldefs -static\"" \
+    --build-arg "LDFLAGS=-w -s -linkmode=external -extldflags \"-Wl,-z,muldefs -static -lgcompat\"" \
     $@
