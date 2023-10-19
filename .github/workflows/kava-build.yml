@@ -34,11 +34,16 @@ jobs:
         version:
           - "0.15.0"
           - "0.17.1"
+          - "0.17.7"
+          - "0.18.2"
           - "0.19.0"
+          - "0.19.2"
           - "0.21.0"
+          - "0.21.1"
           - "0.23.0"
+          - "0.23.3"
           - "0.24.0"
-        
+
         include:
           # Include Defaults (keep at top)
           - name: "kava"
@@ -57,13 +62,30 @@ jobs:
           - version: "0.17.1"
             go_version: "1.17"
 
+          - version: "0.17.7"
+            go_version: "1.17"
+
+          - version: "0.18.2"
+            go_version: "1.18"
+
           - version: "0.19.0"
+            go_version: "1.18"
+
+          - version: "0.19.2"
             go_version: "1.18"
 
           - version: "0.21.0"
             go_version: "1.18"
 
-        
+          - version: "0.21.1"
+            go_version: "1.18"
+
+          - version: "0.23.3"
+            go_version: "1.20"
+
+          - version: "0.24.0"
+            go_version: "1.20"
+
     with:
       binary: ${{ matrix.binary }}
       build_command: ${{ matrix.build_command }}
