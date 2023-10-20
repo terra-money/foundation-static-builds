@@ -1,0 +1,72 @@
+name: chihuahua-build
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'bin/builder'
+      - 'arch.Dockerfile'
+      - 'alpine.Dockerfile'
+      - '.github/workflows/docker-build.yml'
+      - '.github/workflows/chihuahua-build.yml'
+
+  push:
+    branches:
+      - main
+    paths:
+      - 'bin/builder'
+      - 'arch.Dockerfile'
+      - 'alpine.Dockerfile'
+      - '.github/workflows/docker-build.yml'
+      - '.github/workflows/chihuahua-build.yml'
+
+jobs:
+  chihuahua-build:
+    uses: ./.github/workflows/docker-build.yml
+    secrets: inherit
+    strategy:
+      fail-fast: false
+      matrix:
+        #platform: ["linux/amd64", "linux/arm64"] # need arm runners
+        platform: ["linux/amd64"]
+        distro: ["alpine"]
+        version:
+          - "v1.0.0"
+          - "v1.1.0"
+          - "v2.0.1"
+          - "v2.0.2"
+          - "v2.1.0"
+          - "v2.2.1"
+          - "v3.1.0"
+          - "v4.0.0"
+          - "v4.1.0"
+          - "v4.2.0"
+          - "v4.2.3"
+          - "v5.0.0"
+          - "v5.0.1"
+          - "v5.0.2"
+        
+        include:
+          # Include Defaults (keep at top)
+          - name: "chihuahua"
+            binary: "chihuahuad"
+            build_command: "make install"
+            chain_registry_name: "chihuahua"
+            go_version: "1.20"
+            repo: "ChihuahuaChain/chihuahua"
+            os: "linux"
+            arch: "amd64"
+        
+    with:
+      binary: ${{ matrix.binary }}
+      build_command: ${{ matrix.build_command }}
+      chain_registry_name: ${{ matrix.chain_registry_name }}
+      go_version: ${{ matrix.go_version }}
+      name: ${{ matrix.name }}
+      os: ${{ matrix.os }}
+      arch: ${{ matrix.arch }}
+      distro: ${{ matrix.distro }}
+      platform: ${{ matrix.platform }}
+      repo: ${{ matrix.repo }}
+      version: ${{ matrix.version }}
