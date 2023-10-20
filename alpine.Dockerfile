@@ -4,8 +4,8 @@ ARG GO_VERSION="1.20"
 FROM golang:${GO_VERSION}-alpine as base
 
 # NOTE: add libusb-dev to run with LEDGER_ENABLED=true
-RUN set -eu &&\
-    apk update &&\
+RUN set -eu && \
+    apk update && \
     apk add --no-cache \
     ca-certificates \
     linux-headers \
@@ -65,6 +65,7 @@ ARG BUILD_TAGS="netgo,ledger,muslc"
 ARG BUILD_TAGS=""
 ARG LDFLAGS='-w -s -linkmode external -extldflags "-Wl,-z,muldefs -static"'
 #ARG LDFLAGS="-extldflags '-L/go/src/mimalloc/build -lmimalloc -Wl,-z,muldefs -static'"
+ARG CHECK_STATICALLY="true"
 
 ENV APP_NAME=${APP_NAME} \
     BUILD_COMMAND=${BUILD_COMMAND} \
@@ -85,8 +86,10 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 # verify static binary
 RUN set -x && \
     file ${GOPATH}/bin/${BIN_NAME} && \
-    echo "Ensuring binary is statically linked ..." && \
-    (file ${GOPATH}/bin/${BIN_NAME} | grep "statically linked")
+    if [ "${CHECK_STATICALLY}" = "true" ]; then \
+        echo "Ensuring binary is statically linked ..." && \
+        (file ${GOPATH}/bin/${BIN_NAME} | grep "statically linked"); \
+    fi
 
 ################################################################################
 FROM --platform=${BUILDPLATFORM} alpine:latest as prod

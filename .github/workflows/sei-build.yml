@@ -63,6 +63,7 @@ jobs:
             repo_tag: "1.0.6beta"
           - version: "2.0.34beta"
             repo_tag: "2.0.34beta-atlantic-2"
+            go_version: "1.18"
           - version: "2.0.37beta"
             repo_tag: "2.0.37beta"
           - version: "2.0.39beta"
