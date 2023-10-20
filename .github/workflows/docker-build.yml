@@ -127,7 +127,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           images: |
             ghcr.io/${{ github.repository }}/${{ inputs.name }}
-            ${{ secrets.DOCKERHUB_USER }}/${{ inputs.name }}
+            terramoney/${{ inputs.name }}
           tags: |
             type=sha
             type=raw,value=${{ inputs.version }},enable={{ is_default_branch }}
