@@ -33,6 +33,7 @@ jobs:
         distro: ["alpine"]
         version:
           - "0.0.4"
+          - "0.1.3"
           - "5.0.0"
           - "6.0.2"
           - "7.0.0"
@@ -53,6 +54,10 @@ jobs:
             arch: "amd64"
 
           - version: "0.0.4"
+            go_version: "1.16"
+            build_command: "CGO_ENABLED=0 make install"
+
+          - version: "0.1.3"
             go_version: "1.16"
             build_command: "CGO_ENABLED=0 make install"
 
