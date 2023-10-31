@@ -32,12 +32,12 @@ jobs:
         platform: ["linux/amd64"]
         distro: ["alpine"]
         version:
-          - "0.12.0"
+          - "1.3.0"
         
         include:
           # Include Defaults (keep at top)
           - name: "celestia"
-            binary: "celestia"
+            binary: "celestia-appd"
             build_command: "make build && cp ./build/celestia /go/bin/celestia"
             chain_registry_name: "celestia"
             go_version: "1.21"
@@ -46,15 +46,13 @@ jobs:
             arch: "amd64"
         
           # Includes per version
-          - version: "0.12.0"
+          - version: "1.3.0"
             go_version: "1.21.1"
-            check_statically: "false"
 
     with:
       binary: ${{ matrix.binary }}
       build_command: ${{ matrix.build_command }}
       chain_registry_name: ${{ matrix.chain_registry_name }}
-      check_statically: ${{ matrix.check_statically }}
       go_version: ${{ matrix.go_version }}
       name: ${{ matrix.name }}
       os: ${{ matrix.os }}

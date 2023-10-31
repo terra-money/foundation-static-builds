@@ -81,6 +81,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     export VERSION=GIT_VERSION="$(git describe --tags --dirty --always)" && \
     export DENOM=${DENOM:-"u$(echo ${APP_NAME} | head -c 4)"} && \
     export GOWORK=off && \
+    ls -al && \
     eval ${BUILD_COMMAND}
 
 # verify static binary
