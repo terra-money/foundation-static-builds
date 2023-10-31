@@ -48,6 +48,7 @@ jobs:
           # Includes per version
           - version: "0.12.0"
             go_version: "1.21.1"
+            check_statically: "false"
 
     with:
       binary: ${{ matrix.binary }}

@@ -20,6 +20,7 @@ docker buildx build "." -f "${IMAGE}.Dockerfile" \
     --build-arg "BIN_NAME=${NAME}" \
     --build-arg "BUILD_COMMAND=make build && cp ./build/celestia /go/bin/celestia" \
     --build-arg "BUILD_TAGS=netgo ledger muslc" \
+    --build-arg "CHECK_STATICALLY=false" \
     --build-arg "COSMOS_BUILD_OPTIONS=" \
     --build-arg "GIT_TAG=v${TAG}" \
     --build-arg "GIT_REPO=${REPO}" \

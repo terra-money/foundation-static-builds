@@ -21,6 +21,11 @@ on:
         description: "Name of the application"
         required: true
         type: string
+      check_statically:
+        description: "Check for static build"
+        required: false
+        type: string
+        default: "true"
       cosmos_build_options:
         description: "Cosmos build options"
         type: string
