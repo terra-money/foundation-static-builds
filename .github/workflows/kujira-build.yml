@@ -49,10 +49,11 @@ jobs:
           - 0.8.4-mainnet
           - 0.8.5
           - 0.8.6
-          - 0.8.7 
-          - 0.8.8 
+          - 0.8.7
+          - 0.8.8
           - 0.9.0
-        
+          - 0.9.1
+
         include:
           # Include Defaults (keep at top)
           - name: "kujira"
@@ -63,7 +64,7 @@ jobs:
             repo: "Team-Kujira/core"
             os: "linux"
             arch: "amd64"
-        
+
     with:
       binary: ${{ matrix.binary }}
       build_command: ${{ matrix.build_command }}
