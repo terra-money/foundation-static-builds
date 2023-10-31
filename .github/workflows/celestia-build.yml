@@ -54,6 +54,7 @@ jobs:
       binary: ${{ matrix.binary }}
       build_command: ${{ matrix.build_command }}
       chain_registry_name: ${{ matrix.chain_registry_name }}
+      check_statically: ${{ matrix.check_statically }}
       go_version: ${{ matrix.go_version }}
       name: ${{ matrix.name }}
       os: ${{ matrix.os }}
