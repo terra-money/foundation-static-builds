@@ -166,6 +166,7 @@ jobs:
             BUILD_TAGS=${{ inputs.build_tags }}
             CHAIN_REGISTRY_NAME=${{ inputs.chain_registry_name }}
             COSMOS_BUILD_OPTIONS=${{ inputs.cosmos_build_options }}
+            CHECK_STATICALLY=${{ inputs.check_statically }}
             DENOM=${{ inputs.denom }}
             GIT_TAG=${{ env.REPO_TAG }}
             GIT_REPO=${{ inputs.repo }}
