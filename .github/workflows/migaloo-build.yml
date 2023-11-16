@@ -50,6 +50,9 @@ jobs:
             os: "linux"
             arch: "amd64"
         
+          - version: "3.0.2"
+            go_version: "1.21"
+
     with:
       binary: ${{ matrix.binary }}
       build_command: ${{ matrix.build_command }}
