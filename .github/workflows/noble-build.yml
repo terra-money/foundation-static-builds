@@ -40,8 +40,9 @@ jobs:
           - "2.0.0"
           - "3.0.0"
           - "3.1.0"
-          - "4.0.0-alpha1"
-        
+          - "4.0.0"
+          - "4.0.1"
+
         include:
           # Include Defaults (keep at top)
           - name: "noble"
@@ -52,8 +53,7 @@ jobs:
             repo: "strangelove-ventures/noble"
             os: "linux"
             arch: "amd64"
- 
-        
+
     with:
       binary: ${{ matrix.binary }}
       build_command: ${{ matrix.build_command }}
