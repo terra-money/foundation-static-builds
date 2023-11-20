@@ -37,7 +37,8 @@ jobs:
           - "1.6.0"
           - "1.6.1"
           - "1.6.2"
-        
+          - "1.6.3"
+
         include:
           # Include Defaults (keep at top)
           - name: "decentr"
@@ -49,7 +50,7 @@ jobs:
             repo: "Decentr-net/decentr"
             os: "linux"
             arch: "amd64"
-          
+
           - version: 1.5.7
             go_version: "1.16"
 
