@@ -45,10 +45,19 @@ jobs:
             binary: "migalood"
             build_command: "make install"
             chain_registry_name: "migaloo"
-            go_version: "1.20"
+            go_version: "1.21"
             repo: "White-Whale-Defi-Platform/migaloo-chain"
             os: "linux"
             arch: "amd64"
+
+          - version: "1.0.2"
+            go_version: "1.20"
+            
+          - version: "2.0.6"
+            go_version: "1.20"
+
+          - version: "2.2.6"
+            go_version: "1.20"
         
           - version: "3.0.2"
             go_version: "1.21"
