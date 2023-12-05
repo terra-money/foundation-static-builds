@@ -44,6 +44,7 @@ jobs:
           - "0.23.3"
           - "0.24.0"
           - "0.24.1"
+          - "0.25.0"
 
         include:
           # Include Defaults (keep at top)
@@ -88,6 +89,9 @@ jobs:
             go_version: "1.20"
 
           - version: "0.24.1"
+            go_version: "1.20"
+
+          - version: "0.25.0"
             go_version: "1.20"
 
     with:
