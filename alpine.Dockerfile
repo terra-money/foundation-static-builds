@@ -46,13 +46,13 @@ SHELL [ "/bin/bash", "-c" ]
 
 RUN set -e && \
     git clone -b ${GIT_TAG} https://github.com/${GIT_REPO}.git ./ && \
-    export GO_MOD_VERSION="$(awk '/^go /{print $2}' go.mod)" && \
-    if [[ "${GO_VERSION}" != "${GO_MOD_VERSION}"* ]]; then \
-        /bin/bash < <(curl -sSL https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) && \
-        source ${HOME}/.gvm/scripts/gvm && \
-        gvm install go${GO_MOD_VERSION} && \
-        gvm use go${GO_MOD_VERSION}; \
-    fi && \ 
+    # export GO_MOD_VERSION="$(awk '/^go /{print $2}' go.mod)" && \
+    # if [[ "${GO_VERSION}" != "${GO_MOD_VERSION}"* ]]; then \
+    #     /bin/bash < <(curl -sSL https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) && \
+    #     source ${HOME}/.gvm/scripts/gvm && \
+    #     gvm install go${GO_MOD_VERSION} && \
+    #     gvm use go${GO_MOD_VERSION}; \
+    # fi && \ 
     go mod download -x || true
 
 # download wasmvm if version is specified
