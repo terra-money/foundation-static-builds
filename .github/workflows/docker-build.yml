@@ -69,10 +69,6 @@ on:
         description: "Linux distribution"
         required: true
         type: string
-      distro_version:
-        description: "Linux distribution version"
-        required: false
-        type: string
       platform:
         description: "Platform"
         required: true
@@ -172,7 +168,6 @@ jobs:
             COSMOS_BUILD_OPTIONS=${{ inputs.cosmos_build_options }}
             CHECK_STATICALLY=${{ inputs.check_statically }}
             DENOM=${{ inputs.denom }}
-            DISTRO_VERSION=${{ inputs.distro_version }}
             GIT_TAG=${{ env.REPO_TAG }}
             GIT_REPO=${{ inputs.repo }}
             GO_VERSION=${{ inputs.go_version }}

@@ -1,8 +1,7 @@
 ARG GO_VERSION="1.20"
-ARG DISTRO_VERSION="3.19"
 
 ################################################################################
-FROM golang:${GO_VERSION}-alpine${DISTRO_VERSION} as base
+FROM golang:${GO_VERSION}-alpine as base
 
 # NOTE: add libusb-dev to run with LEDGER_ENABLED=true
 RUN set -eu && \
