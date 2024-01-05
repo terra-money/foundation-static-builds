@@ -40,7 +40,7 @@ jobs:
             binary: "marsd"
             build_command: "make install"
             chain_registry_name: "mars"
-            go_version: "1.20"
+            go_version: "1.20.10"
             repo: "mars-protocol/hub"
             os: "linux"
             arch: "amd64"

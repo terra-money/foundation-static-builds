@@ -50,7 +50,7 @@ jobs:
             binary: "terrad"
             build_command: "make install"
             chain_registry_name: "terra2"
-            go_version: "1.20"
+            go_version: "1.20.10"
             repo: "terra-money/core"
             os: "linux"
             arch: "amd64"
