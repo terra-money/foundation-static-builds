@@ -19,10 +19,9 @@ docker buildx build "." -f "${DISTRO}.Dockerfile" \
     --build-arg "ARCH=amd64" \
     --build-arg "APP_NAME=${NAME}" \
     --build-arg "BIN_NAME=${NAME}d" \
-    --build-arg "BUILD_COMMAND=make install" \
+    --build-arg "BUILD_COMMAND=CGO_ENABLED=0 make install" \
     --build-arg "BUILD_TAGS=netgo ledger muslc" \
     --build-arg "COSMOS_BUILD_OPTIONS=" \
-    --build-arg "DISTRO_VERSION=${DISTRO_VERSION}" \
     --build-arg "GIT_TAG=v${TAG}" \
     --build-arg "GIT_REPO=${REPO}" \
     --build-arg "GO_VERSION=${GO_VERSION}" \
