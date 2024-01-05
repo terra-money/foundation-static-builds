@@ -94,7 +94,7 @@ RUN set -x && \
     fi
 
 ################################################################################
-FROM --platform=${BUILDPLATFORM} alpine:${DISTRO_VERSION} as prod
+FROM --platform=${BUILDPLATFORM} alpine:latest as prod
 
 # build args passed down to env var
 
