@@ -13,7 +13,7 @@ ARG GO_VERSION="1.20.8"
 
 # # NOTE: add libusb-dev to run with LEDGER_ENABLED=true
 RUN set -eu & \
-    pacman -Syyu --noconfirm linux-headers base-devel glibc git bc man-pages && \
+    pacman -Syyu --noconfirm linux-headers base-devel glibc git bc && \
     curl -sSL https://go.dev/dl/go${GO_VERSION}.${OS}-${ARCH}.tar.gz | \
     tar -C / -xz && \
     ln -s /go/bin/go /usr/local/bin/go
