@@ -1,8 +1,8 @@
 ARG GO_VERSION="1.20"
-ARG ALPINE_VERSION="3.18"
+ARG DISTRO_VERSION="3.19"
 
 ################################################################################
-FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} as base
+FROM golang:${GO_VERSION}-alpine${DISTRO_VERSION} as base
 
 # NOTE: add libusb-dev to run with LEDGER_ENABLED=true
 RUN set -eu && \
@@ -94,7 +94,7 @@ RUN set -x && \
     fi
 
 ################################################################################
-FROM --platform=${BUILDPLATFORM} alpine:latest as prod
+FROM --platform=${BUILDPLATFORM} alpine:${DISTRO_VERSION} as prod
 
 # build args passed down to env var
 
