@@ -10,6 +10,7 @@ RUN set -eu && \
     ca-certificates \
     linux-headers \
     build-base \
+    musl-dev \
     bash \
     bison \
     curl \
