@@ -74,6 +74,16 @@ jobs:
           - version: "0.9.1"
             go_version: "1.20.8"
 
+          - version: "0.9.1-1"
+            go_version: "1.20.8"
+
+          - version: "0.9.3"
+            go_version: "1.20.8"
+
+          - version: "0.9.3-1"
+            go_version: "1.20.8"
+
+
     with:
       binary: ${{ matrix.binary }}
       build_command: ${{ matrix.build_command }}
