@@ -17,7 +17,7 @@ RUN set -eu && \
     gcompat \
     git 
 
-COPY ./bin/install-mimalloc ./bin/install-wasmvm /usr/local/bin/
+COPY ./bin/install-mimalloc ./bin/install-wasmvm ./bin/install-rocksdb /usr/local/bin/
 
 ################################################################################
 FROM base as builder
@@ -29,12 +29,18 @@ ARG DENOM
 ARG GIT_TAG="v2.4.1"
 ARG GIT_REPO="terra-money/core"
 ARG MIMALLOC_VERSION
+ARG ROCKSDB_VERSION
 ARG GO_VERSION
 
 ENV MIMALLOC_VERSION=${MIMALLOC_VERSION}
 # install mimalloc if version is specified
 RUN set -eu && \
     if [ -n "${MIMALLOC_VERSION}" ]; then install-mimalloc "${MIMALLOC_VERSION}"; fi
+
+ENV ROCKSDB_VERSION=${ROCKSDB_VERSION}
+# install rocksdb if version is specified
+RUN set -eu && \
+    if [ -n "${ROCKSDB_VERSION}" ]; then install-rocksdb "${ROCKSDB_VERSION}"; fi
 
 # download dependencies to cache as layer
 WORKDIR ${GOPATH}/src/app

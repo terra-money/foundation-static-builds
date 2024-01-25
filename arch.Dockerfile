@@ -18,7 +18,7 @@ RUN set -eu & \
     tar -C / -xz && \
     ln -s /go/bin/go /usr/local/bin/go
 
-COPY ./bin/install-mimalloc ./bin/install-wasmvm /usr/local/bin/
+COPY ./bin/install-mimalloc ./bin/install-wasmvm ./bin/install-rocksdb /usr/local/bin/
 
 # ################################################################################
 FROM base as builder
@@ -35,6 +35,11 @@ ENV MIMALLOC_VERSION=${MIMALLOC_VERSION}
 # install mimalloc if version is specified
 RUN set -eu && \
     if [ -n "${MIMALLOC_VERSION}" ]; then install-mimalloc "${MIMALLOC_VERSION}"; fi
+
+ENV ROCKSDB_VERSION=${ROCKSDB_VERSION}
+# install rocksdb if version is specified
+RUN set -eu && \
+    if [ -n "${ROCKSDB_VERSION}" ]; then install-rocksdb "${ROCKSDB_VERSION}"; fi
 
 # download dependencies to cache as layer
 WORKDIR ${GOPATH}/src/app

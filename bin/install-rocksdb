@@ -1,0 +1,19 @@
+#!/bin/sh
+set -eu
+
+ROCKSDB_VERSION="$1"
+
+if [ -n "${ROCKSDB_VERSION}" ]; then
+    mkdir -p "${GOPATH}/src/rocksdb"
+    cd "${GOPATH}/src/rocksdb"
+    git clone --depth 1 --branch "${ROCKSDB_VERSION}" \
+        https://github.com/facebook/rocksdb ./
+    # busybox install doesn't support -C flag
+    sed -i "s/install -C/install/g" Makefile
+    apk add zstd-static lz4-static zlib-static snappy-static
+    make -j$(nproc) static_lib
+    make install-static
+else
+    echo "ROCKSDB_VERSION not set" >&2
+    exit 1
+fi

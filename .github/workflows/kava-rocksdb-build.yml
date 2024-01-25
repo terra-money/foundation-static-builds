@@ -1,0 +1,66 @@
+name: kava-rocksdb-build
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'bin/builder'
+      - 'arch.Dockerfile'
+      - 'alpine.Dockerfile'
+      - '.github/workflows/docker-build.yml'
+      - '.github/workflows/kava-rocksdb-build.yml'
+
+  push:
+    branches:
+      - main
+    paths:
+      - 'bin/builder'
+      - 'arch.Dockerfile'
+      - 'alpine.Dockerfile'
+      - '.github/workflows/docker-build.yml'
+      - '.github/workflows/kava-rocksdb-build.yml'
+
+jobs:
+  kava-rocksdb-build:
+    uses: ./.github/workflows/docker-build.yml
+    secrets: inherit
+    strategy:
+      fail-fast: false
+      matrix:
+        #platform: ["linux/amd64", "linux/arm64"] # need arm runners
+        platform: ["linux/amd64"]
+        distro: ["alpine"]
+        version:
+          - "0.25.0"
+
+        include:
+          # Include Defaults (keep at top)
+          - name: "kava-rocksdb"
+            binary: "kava"
+            build_command: "make install"
+            chain_registry_name: "kava"
+            repo: "Kava-Labs/kava"
+            go_version: "1.20"
+            os: "linux"
+            arch: "amd64"
+            rocksdb_version: "8.1.1"
+            cosmos_build_options: "nostrip rocksdb"
+
+          - version: "0.25.0"
+            go_version: "1.19"
+
+    with:
+      binary: ${{ matrix.binary }}
+      build_command: ${{ matrix.build_command }}
+      chain_registry_name: ${{ matrix.chain_registry_name }}
+      go_version: ${{ matrix.go_version }}
+      name: ${{ matrix.name }}
+      os: ${{ matrix.os }}
+      arch: ${{ matrix.arch }}
+      distro: ${{ matrix.distro }}
+      platform: ${{ matrix.platform }}
+      repo: ${{ matrix.repo }}
+      version: ${{ matrix.version }}
+      rocksdb_version: v${{ matrix.rocksdb_version }}
+      denom: ukava
