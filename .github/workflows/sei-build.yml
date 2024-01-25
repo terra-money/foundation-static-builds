@@ -95,6 +95,8 @@ jobs:
             repo_tag: "3.0.7"
           - version: "3.0.8"
             repo_tag: "3.0.8"
+          - version: "3.6.1"
+            go_version: "1.19"
 
     with:
       binary: ${{ matrix.binary }}
