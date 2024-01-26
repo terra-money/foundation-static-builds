@@ -28,6 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        version_suffix: ["", "-rdb"]
         #platform: ["linux/amd64", "linux/arm64"] # need arm runners
         platform: ["linux/amd64"]
         distro: ["alpine"]
@@ -56,6 +57,10 @@ jobs:
             go_version: "1.19"
             os: "linux"
             arch: "amd64"
+
+          - version_suffix: "-rdb"
+            rocksdb_version: "8.1.1"
+            cosmos_build_options: "nostrip rocksdb"
 
           - version: "0.15.0"
             go_version: "1.13"
@@ -105,4 +110,5 @@ jobs:
       distro: ${{ matrix.distro }}
       platform: ${{ matrix.platform }}
       repo: ${{ matrix.repo }}
-      version: ${{ matrix.version }}
+      version: ${{ format('{0}{1}', matrix.version, matrix.version_suffix }}
+      repo_tag: ${{ matrix.version }}
