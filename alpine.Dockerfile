@@ -19,8 +19,7 @@ RUN set -eu && \
     musl-dev \
     perl \
     snappy-static \
-    zlib-static \
-    zstd-static
+    zlib-static 
 
 COPY ./bin/install-mimalloc ./bin/install-wasmvm ./bin/install-rocksdb /usr/local/bin/
 
