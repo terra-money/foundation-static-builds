@@ -38,7 +38,7 @@ jobs:
           # Include Defaults (keep at top)
           - name: "celestia"
             binary: "celestia-appd"
-            build_command: "make build && cp ./build/celestia-appd /go/bin/celestia-appd"
+            build_command: "make install"
             chain_registry_name: "celestia"
             go_version: "1.21"
             repo: "celestiaorg/celestia-node"
