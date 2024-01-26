@@ -61,7 +61,7 @@ jobs:
             cosmos_build_options: ""
 
           - version_suffix: "-rdb"
-            rocksdb_version: "8.1.1"
+            rocksdb_version: "v8.1.1"
             cosmos_build_options: "nostrip rocksdb"
 
           - version: "0.15.0"
