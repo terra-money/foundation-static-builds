@@ -33,6 +33,9 @@ jobs:
         distro: ["alpine"]
         version:
           - "1.3.0"
+          - "1.4.0"
+          - "1.5.0"
+          - "1.6.0"
         
         include:
           # Include Defaults (keep at top)
@@ -41,7 +44,7 @@ jobs:
             build_command: "make install"
             chain_registry_name: "celestia"
             go_version: "1.21"
-            repo: "celestiaorg/celestia-node"
+            repo: "celestiaorg/celestia-app"
             os: "linux"
             arch: "amd64"
             check_statically: "false"
@@ -49,6 +52,13 @@ jobs:
           # Includes per version
           - version: "1.3.0"
             go_version: "1.21.1"
+          - version: "1.4.0"
+            go_version: "1.21.1"
+          - version: "1.5.0"
+            go_version: "1.21.1"
+          - version: "1.6.0"
+            go_version: "1.21.1"
+
 
     with:
       binary: ${{ matrix.binary }}
