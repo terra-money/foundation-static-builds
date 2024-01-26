@@ -20,7 +20,7 @@ docker buildx build "." -f "${IMAGE}.Dockerfile" \
     --build-arg "BIN_NAME=${NAME}-appd" \
     --build-arg "BUILD_COMMAND=make install" \
     --build-arg "BUILD_TAGS=netgo ledger muslc" \
-    --build-arg "CHECK_STATICALLY=false" \
+    #--build-arg "CHECK_STATICALLY=false" \
     --build-arg "COSMOS_BUILD_OPTIONS=" \
     --build-arg "GIT_TAG=v${TAG}" \
     --build-arg "GIT_REPO=${REPO}" \

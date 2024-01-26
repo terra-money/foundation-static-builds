@@ -7,15 +7,20 @@ FROM golang:${GO_VERSION}-alpine as base
 RUN set -eu && \
     apk update && \
     apk add --no-cache \
-    ca-certificates \
-    linux-headers \
-    build-base \
-    musl-dev \
     bash \
     bison \
+    build-base \
+    ca-certificates \
     curl \
+    git \
     gcompat \
-    git 
+    linux-headers \
+    lz4-static \
+    musl-dev \
+    perl \
+    snappy-static \
+    zlib-static \
+    zstd-static
 
 COPY ./bin/install-mimalloc ./bin/install-wasmvm ./bin/install-rocksdb /usr/local/bin/
 
@@ -88,7 +93,6 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     export VERSION=GIT_VERSION="$(git describe --tags --dirty --always)" && \
     export DENOM=${DENOM:-"u$(echo ${APP_NAME} | head -c 4)"} && \
     export GOWORK=off && \
-    ls -al && \
     eval ${BUILD_COMMAND}
 
 # verify static binary
