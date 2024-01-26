@@ -51,6 +51,11 @@ on:
         required: false
         type: string
         default: ""
+      rocksdb_version:
+        description: "RocksDB version"
+        required: false
+        type: string
+        default: ""
       name:
         description: "Name of the application"
         required: true
@@ -173,3 +178,4 @@ jobs:
             GO_VERSION=${{ inputs.go_version }}
             LDFLAGS=${{ inputs.ldflags }}
             MIMALLOC_VERSION=${{ inputs.mimalloc_version }}
+            ROCKSDB_VERSION=${{ inputs.rocksdb_version }}
