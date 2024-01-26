@@ -58,6 +58,7 @@ jobs:
             os: "linux"
             arch: "amd64"
             rocksdb_version: ""
+            cosmos_build_options: ""
 
           - version_suffix: "-rdb"
             rocksdb_version: "8.1.1"
@@ -114,3 +115,4 @@ jobs:
       version: ${{ format('{0}{1}', matrix.version, matrix.version_suffix) }}
       repo_tag: ${{ matrix.version }}
       rocksdb_version: ${{ matrix.rocksdb_version }}
+      cosmos_build_options: ${{ matrix.cosmos_build_options }}
