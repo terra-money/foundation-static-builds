@@ -57,6 +57,7 @@ jobs:
             go_version: "1.19"
             os: "linux"
             arch: "amd64"
+            rocksdb_version: ""
 
           - version_suffix: "-rdb"
             rocksdb_version: "8.1.1"
@@ -110,5 +111,6 @@ jobs:
       distro: ${{ matrix.distro }}
       platform: ${{ matrix.platform }}
       repo: ${{ matrix.repo }}
-      version: ${{ format('{0}{1}', matrix.version, matrix.version_suffix }}
+      version: ${{ format('{0}{1}', matrix.version, matrix.version_suffix) }}
       repo_tag: ${{ matrix.version }}
+      rocksdb_version: ${{ matrix.rocksdb_version }}
