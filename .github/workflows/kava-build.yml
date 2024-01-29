@@ -113,6 +113,6 @@ jobs:
       platform: ${{ matrix.platform }}
       repo: ${{ matrix.repo }}
       version: ${{ format('{0}{1}', matrix.version, matrix.version_suffix) }}
-      repo_tag: ${{ fortmat('v{0}', matrix.version }}
+      repo_tag: ${{ format('v{0}', matrix.version) }}
       rocksdb_version: ${{ matrix.rocksdb_version }}
       cosmos_build_options: ${{ matrix.cosmos_build_options }}
