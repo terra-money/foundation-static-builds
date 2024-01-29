@@ -10,6 +10,7 @@ if [ -n "${ROCKSDB_VERSION}" ]; then
         https://github.com/facebook/rocksdb ./
     # busybox install doesn't support -C flag
     sed -i "s/install -C/install/g" Makefile
+    # apk add zstd-static lz4-static zlib-static snappy-static
     make -j$(nproc) static_lib
     make install-static
 else
