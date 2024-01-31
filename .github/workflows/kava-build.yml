@@ -64,6 +64,25 @@ jobs:
             rocksdb_version: "v8.1.1"
             cosmos_build_options: "nostrip rocksdb"
 
+          - version_suffix: "-rdb"
+            rocksdb_version: "v7.10.2"
+            version: "0.15.0"
+            go_version: "1.13"
+            cosmos_build_options: "nostrip rocksdb"
+            build_command: "make install && mv /go/bin/kvd /go/bin/kava"
+
+          - version_suffix: "-rdb"
+            rocksdb_version: "v7.10.2"
+            version: "0.17.1"
+            go_version: "1.17"
+            cosmos_build_options: "nostrip rocksdb"
+
+          - version_suffix: "-rdb"
+            rocksdb_version: "v7.10.2"
+            version: "0.17.7"
+            go_version: "1.17"
+            cosmos_build_options: "nostrip rocksdb"
+
           - version: "0.15.0"
             go_version: "1.13"
             build_command: "make install && mv /go/bin/kvd /go/bin/kava"
