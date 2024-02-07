@@ -16,10 +16,13 @@ RUN set -eu && \
     gcompat \
     linux-headers \
     lz4-static \
+    lz4-dev \
     musl-dev \
     perl \
     snappy-static \
-    zlib-static 
+    snappy-dev \
+    zlib-static \
+    zlib-dev
 
 COPY ./bin/install-mimalloc ./bin/install-wasmvm ./bin/install-rocksdb /usr/local/bin/
 
