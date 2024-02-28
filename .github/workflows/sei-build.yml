@@ -5,21 +5,21 @@ on:
     branches:
       - main
     paths:
-      - 'bin/builder'
-      - 'arch.Dockerfile'
-      - 'alpine.Dockerfile'
-      - '.github/workflows/docker-build.yml'
-      - '.github/workflows/sei-build.yml'
+      - "bin/builder"
+      - "arch.Dockerfile"
+      - "alpine.Dockerfile"
+      - ".github/workflows/docker-build.yml"
+      - ".github/workflows/sei-build.yml"
 
   push:
     branches:
       - main
     paths:
-      - 'bin/builder'
-      - 'arch.Dockerfile'
-      - 'alpine.Dockerfile'
-      - '.github/workflows/docker-build.yml'
-      - '.github/workflows/sei-build.yml'
+      - "bin/builder"
+      - "arch.Dockerfile"
+      - "alpine.Dockerfile"
+      - ".github/workflows/docker-build.yml"
+      - ".github/workflows/sei-build.yml"
 
 jobs:
   sei-build:
@@ -54,6 +54,7 @@ jobs:
           - 3.4.0
           - 3.5.0
           - 3.6.1
+          - 3.7.0
 
         include:
           # Include Defaults (keep at top)
@@ -96,6 +97,8 @@ jobs:
           - version: "3.0.8"
             repo_tag: "3.0.8"
           - version: "3.6.1"
+            go_version: "1.19"
+          - version: "3.7.0"
             go_version: "1.19"
 
     with:
