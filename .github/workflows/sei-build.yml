@@ -100,6 +100,8 @@ jobs:
             go_version: "1.19"
           - version: "3.7.0"
             go_version: "1.19"
+          - version: "3.8.0"
+            go_version: "1.21"
 
     with:
       binary: ${{ matrix.binary }}
