@@ -5,21 +5,21 @@ on:
     branches:
       - main
     paths:
-      - 'bin/builder'
-      - 'arch.Dockerfile'
-      - 'alpine.Dockerfile'
-      - '.github/workflows/docker-build.yml'
-      - '.github/workflows/kujira-build.yml'
+      - "bin/builder"
+      - "arch.Dockerfile"
+      - "alpine.Dockerfile"
+      - ".github/workflows/docker-build.yml"
+      - ".github/workflows/kujira-build.yml"
 
   push:
     branches:
       - main
     paths:
-      - 'bin/builder'
-      - 'arch.Dockerfile'
-      - 'alpine.Dockerfile'
-      - '.github/workflows/docker-build.yml'
-      - '.github/workflows/kujira-build.yml'
+      - "bin/builder"
+      - "arch.Dockerfile"
+      - "alpine.Dockerfile"
+      - ".github/workflows/docker-build.yml"
+      - ".github/workflows/kujira-build.yml"
 
 jobs:
   kujira-build:
@@ -56,6 +56,7 @@ jobs:
           - 0.9.1-1
           - 0.9.3
           - 0.9.3-1
+          - 1.0.2
 
         include:
           # Include Defaults (keep at top)
@@ -83,6 +84,8 @@ jobs:
           - version: "0.9.3-1"
             go_version: "1.20.8"
 
+          - version: "1.0.2"
+            go_version: "1.21.8"
 
     with:
       binary: ${{ matrix.binary }}
