@@ -1,0 +1,65 @@
+name: juno-build
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'bin/builder'
+      - 'arch.Dockerfile'
+      - 'alpine.Dockerfile'
+      - '.github/workflows/docker-build.yml'
+      - '.github/workflows/juno-build.yml'
+
+  push:
+    branches:
+      - main
+    paths:
+      - 'bin/builder'
+      - 'arch.Dockerfile'
+      - 'alpine.Dockerfile'
+      - '.github/workflows/docker-build.yml'
+      - '.github/workflows/juno-build.yml'
+
+jobs:
+  juno-build:
+    uses: ./.github/workflows/docker-build.yml
+    secrets: inherit
+    strategy:
+      fail-fast: false
+      matrix:
+        #platform: ["linux/amd64", "linux/arm64"] # need arm runners
+        platform: ["linux/amd64"]
+        distro: ["alpine", "arch"]
+        version:
+          - 23.1.0
+
+        include:
+         # Include Defaults (keep at top)
+          - binary: "junod"
+            build_command: "make install"
+            chain_registry_name: "juno"
+            go_version: "1.22"
+            name: "juno"
+            repo: "CosmosContracts/juno"
+            os: linux
+            arch: amd64
+            denom: ujuno
+
+          # Include per version
+          - version: "23.1.0"
+            go_version: "1.22.2"
+
+    with:
+      name: ${{ matrix.name }}
+      binary: ${{ matrix.binary }}
+      build_command: ${{ matrix.build_command }}
+      chain_registry_name: ${{ matrix.chain_registry_name }}
+      denom: ${{ matrix.denom }}
+      go_version: ${{ matrix.go_version }}
+      os: ${{ matrix.os }}
+      arch: ${{ matrix.arch }}
+      distro: ${{ matrix.distro }}
+      platform: ${{ matrix.platform }}
+      repo: ${{ matrix.repo }}
+      version: ${{ matrix.version }}
