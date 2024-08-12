@@ -30,7 +30,7 @@ jobs:
       matrix:
         #platform: ["linux/amd64", "linux/arm64"] # need arm runners
         platform: ["linux/amd64"]
-        distro: ["alpine", "arch"]
+        distro: ["alpine"]
         version:
           - 23.1.0
 
