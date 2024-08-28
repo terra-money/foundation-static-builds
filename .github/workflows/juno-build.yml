@@ -5,21 +5,21 @@ on:
     branches:
       - main
     paths:
-      - 'bin/builder'
-      - 'arch.Dockerfile'
-      - 'alpine.Dockerfile'
-      - '.github/workflows/docker-build.yml'
-      - '.github/workflows/juno-build.yml'
+      - "bin/builder"
+      - "arch.Dockerfile"
+      - "alpine.Dockerfile"
+      - ".github/workflows/docker-build.yml"
+      - ".github/workflows/juno-build.yml"
 
   push:
     branches:
       - main
     paths:
-      - 'bin/builder'
-      - 'arch.Dockerfile'
-      - 'alpine.Dockerfile'
-      - '.github/workflows/docker-build.yml'
-      - '.github/workflows/juno-build.yml'
+      - "bin/builder"
+      - "arch.Dockerfile"
+      - "alpine.Dockerfile"
+      - ".github/workflows/docker-build.yml"
+      - ".github/workflows/juno-build.yml"
 
 jobs:
   juno-build:
@@ -33,9 +33,10 @@ jobs:
         distro: ["alpine"]
         version:
           - 23.1.0
+          - 24.0.0
 
         include:
-         # Include Defaults (keep at top)
+          # Include Defaults (keep at top)
           - binary: "junod"
             build_command: "make install"
             chain_registry_name: "juno"
@@ -48,6 +49,9 @@ jobs:
 
           # Include per version
           - version: "23.1.0"
+            go_version: "1.22.2"
+
+          - version: "24.0.0"
             go_version: "1.22.2"
 
     with:
